@@ -1,5 +1,5 @@
 export const FACEBOOK_APP_ID = "824481481426616";
-
+export const GOOGLE_APP_ID = "";
 export const FIREBASE_CONFIG = {
     apiKey: "AIzaSyB-Ky6gGdOHFMC3lRvggRpLHtNcdBMp_B4",
     authDomain: "project-2e3e8.firebaseapp.com",
