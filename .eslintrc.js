@@ -1,21 +1,14 @@
 module.exports = {
-  parser: "babel-eslint",
+  root: true,
   env: {
-    es6: true,
     node: true,
-    browser: true
+  },
+  extends: 'vuetify',
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   },
   parserOptions: {
-    ecmaVersion: 6,
-    sourceType: "module",
-    ecmaFeatures: {
-      jsx: true
-    }
+    parser: 'babel-eslint',
   },
-  plugins: ["react"],
-  extends: [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended"
-  ]
-};
+}
