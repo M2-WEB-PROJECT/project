@@ -1,8 +1,11 @@
 {
+  "homepage": "https://m2-web-project.github.io/project/",
   "name": "vuetify-material-dashboard",
   "version": "2.1.0",
   "private": true,
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "dev": "vue-cli-service serve --open",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
