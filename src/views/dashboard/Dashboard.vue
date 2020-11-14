@@ -13,7 +13,7 @@
           :data="emailsSubscriptionChart.data"
           :options="emailsSubscriptionChart.options"
           :responsive-options="emailsSubscriptionChart.responsiveOptions"
-          color="#E91E63"
+          color="secondary"
           hover-reveal
           type="Bar"
         >
@@ -80,7 +80,7 @@
         <base-material-chart-card
           :data="dailySalesChart.data"
           :options="dailySalesChart.options"
-          color="success"
+          color="primary"
           hover-reveal
           type="Line"
         >
@@ -250,7 +250,7 @@
         lg="3"
       >
         <base-material-stats-card
-          color="success"
+          color="info"
           icon="mdi-store"
           title="Revenue"
           value="$ 34,245"
@@ -265,7 +265,7 @@
         lg="3"
       >
         <base-material-stats-card
-          color="orange"
+          color="secondary"
           icon="mdi-sofa"
           title="Bookings"
           value="184"
@@ -280,7 +280,7 @@
         md="6"
       >
         <base-material-card
-          color="warning"
+          color="primary"
           class="px-5 py-3"
         >
           <template v-slot:heading>
@@ -305,17 +305,17 @@
         cols="12"
         md="6"
       >
-        <base-material-card class="px-5 py-3">
+        <base-material-card
+          class="px-5 py-3"
+          color="secondary"
+        >
           <template v-slot:heading>
             <v-tabs
               v-model="tabs"
               background-color="transparent"
               slider-color="white"
+              :active-class="`${!isDark ? 'accent' : 'white'}--text`"
             >
-              <span
-                class="subheading font-weight-light mx-3"
-                style="align-self: center"
-              >Tasks:</span>
               <v-tab class="mr-3">
                 <v-icon class="mr-2">
                   mdi-bug

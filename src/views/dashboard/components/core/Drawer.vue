@@ -4,8 +4,6 @@
     v-model="drawer"
     :dark="barColor !== 'rgba(228, 226, 226, 1), rgba(255, 255, 255, 0.7)'"
     :expand-on-hover="expandOnHover"
-    :right="$vuetify.rtl"
-    :src="barImage"
     mobile-break-point="960"
     app
     width="260"
@@ -31,14 +29,13 @@
           contain
         >
           <v-img
-            src="https://demos.creative-tim.com/vuetify-material-dashboard/favicon.ico"
+            src="@/assets/icon.jpg"
             max-height="30"
           />
         </v-list-item-avatar>
 
         <v-list-item-content>
           <v-list-item-title
-            class="display-1"
             v-text="profile.title"
           />
         </v-list-item-content>
@@ -51,8 +48,6 @@
       expand
       nav
     >
-      <!-- Style cascading bug  -->
-      <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
       <div />
 
       <template v-for="(item, i) in computedItems">
@@ -60,9 +55,7 @@
           v-if="item.children"
           :key="`group-${i}`"
           :item="item"
-        >
-          <!--  -->
-        </base-item-group>
+        />
 
         <base-item
           v-else
@@ -70,21 +63,8 @@
           :item="item"
         />
       </template>
-
-      <!-- Style cascading bug  -->
-      <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
       <div />
     </v-list>
-
-    <template v-slot:append>
-      <base-item
-        :item="{
-          title: $t('upgrade'),
-          icon: 'mdi-package-up',
-          to: '/upgrade',
-        }"
-      />
-    </template>
   </v-navigation-drawer>
 </template>
 
@@ -109,43 +89,48 @@
         {
           icon: 'mdi-view-dashboard',
           title: 'dashboard',
-          to: '/',
+          to: '/app/dashboard',
         },
         {
           icon: 'mdi-account',
           title: 'user',
-          to: '/pages/user',
+          to: '/app/pages/user',
         },
         {
           title: 'rtables',
           icon: 'mdi-clipboard-outline',
-          to: '/tables/regular-tables',
+          to: '/app/tables/regular-tables',
         },
         {
           title: 'typography',
           icon: 'mdi-format-font',
-          to: '/components/typography',
+          to: '/app/components/typography',
         },
         {
           title: 'icons',
           icon: 'mdi-chart-bubble',
-          to: '/components/icons',
+          to: '/app/components/icons',
         },
         {
           title: 'google',
           icon: 'mdi-map-marker',
-          to: '/maps/google-maps',
+          to: '/app/maps/google-maps',
         },
         {
           title: 'notifications',
           icon: 'mdi-bell',
-          to: '/components/notifications',
+          to: '/app/components/notifications',
+        },
+        {
+          title: 'timeline',
+          icon: 'mdi-bell',
+          to: '/app/pages/timeline',
         },
       ],
     }),
 
     computed: {
-      ...mapState(['barColor', 'barImage']),
+      ...mapState(['barColor']),
       drawer: {
         get () {
           return this.$store.state.drawer

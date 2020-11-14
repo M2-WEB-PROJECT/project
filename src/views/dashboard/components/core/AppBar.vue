@@ -30,7 +30,17 @@
 
     <v-spacer />
 
+    <span>Dark Mode</span>
+
+    <v-switch
+      v-model="$vuetify.theme.dark"
+      class="ma-0 pa-0 ml-3"
+      color="secondary"
+      hide-details
+    />
+
     <v-text-field
+      class="ml-10"
       :label="$t('search')"
       color="secondary"
       hide-details

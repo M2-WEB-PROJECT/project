@@ -1,5 +1,9 @@
 <template>
-  <router-view />
+  <v-app
+    style="background-color: #2E383D;"
+  >
+    <router-view />
+  </v-app>
 </template>
 
 <script>

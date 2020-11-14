@@ -8,13 +8,32 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
+      name: 'Auth',
+      path: '/auth',
+      component: () => import('@/views/authentification/Index'),
+      children: [
+        // Login
+        {
+          name: 'Login',
+          path: 'login',
+          component: () => import('@/views/authentification/login/Login'),
+        },
+        // Register
+        {
+          name: 'Register',
+          path: 'register',
+          component: () => import('@/views/authentification/register/Register'),
+        },
+      ],
+    },
+    {
+      path: '/app',
       component: () => import('@/views/dashboard/Index'),
       children: [
         // Dashboard
         {
           name: 'Dashboard',
-          path: '',
+          path: 'dashboard',
           component: () => import('@/views/dashboard/Dashboard'),
         },
         // Pages
@@ -50,11 +69,10 @@ export default new Router({
           path: 'maps/google-maps',
           component: () => import('@/views/dashboard/maps/GoogleMaps'),
         },
-        // Upgrade
         {
-          name: 'Upgrade',
-          path: 'upgrade',
-          component: () => import('@/views/dashboard/Upgrade'),
+          name: 'TimeLine',
+          path: 'pages/timeline',
+          component: () => import('@/views/dashboard/pages/Timeline'),
         },
       ],
     },
