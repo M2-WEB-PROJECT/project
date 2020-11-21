@@ -11,7 +11,6 @@
       v-model="internalValue"
       :color="$attrs.color"
       :dismissible="dismissible"
-      :type="type"
       class="ma-0"
       dark
     >

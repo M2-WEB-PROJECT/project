@@ -4,31 +4,31 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
     {
-      name: 'Auth',
       path: '/auth',
       component: () => import('@/views/authentification/Index'),
+      redirect: { name: 'Login' },
       children: [
-        // Login
-        {
-          name: 'Login',
-          path: 'login',
-          component: () => import('@/views/authentification/login/Login'),
-        },
         // Register
         {
           name: 'Register',
           path: 'register',
           component: () => import('@/views/authentification/register/Register'),
         },
+        // Login
+        {
+          name: 'Login',
+          path: 'login',
+          component: () => import('@/views/authentification/login/Login'),
+        },
       ],
     },
     {
-      path: '/app',
+      path: '/',
       component: () => import('@/views/dashboard/Index'),
+      redirect: { name: 'Dashboard' },
       children: [
         // Dashboard
         {
@@ -40,40 +40,45 @@ export default new Router({
         {
           name: 'User Profile',
           path: 'pages/user',
-          component: () => import('@/views/dashboard/pages/UserProfile'),
+          component: () => import('@/views/profile/Index'),
         },
         {
-          name: 'Notifications',
-          path: 'components/notifications',
-          component: () => import('@/views/dashboard/component/Notifications'),
+          name: 'Discover',
+          path: '/discover',
+          component: () => import('@/views/discover/Index'),
         },
         {
-          name: 'Icons',
-          path: 'components/icons',
-          component: () => import('@/views/dashboard/component/Icons'),
-        },
-        {
-          name: 'Typography',
-          path: 'components/typography',
-          component: () => import('@/views/dashboard/component/Typography'),
-        },
-        // Tables
-        {
-          name: 'Regular Tables',
-          path: 'tables/regular-tables',
-          component: () => import('@/views/dashboard/tables/RegularTables'),
-        },
-        // Maps
-        {
-          name: 'Google Maps',
-          path: 'maps/google-maps',
-          component: () => import('@/views/dashboard/maps/GoogleMaps'),
+          name: 'History',
+          path: 'tables/historique',
+          component: () => import('@/views/historique/components/HistoriqueInvestisseur'),
         },
         {
           name: 'TimeLine',
           path: 'pages/timeline',
-          component: () => import('@/views/dashboard/pages/Timeline'),
+          component: () => import('@/views/timeline/Timeline'),
         },
+        {
+          name: 'Icons',
+          path: 'components/icons',
+          component: () => import('@/components/Icons'),
+        },
+        {
+          name: 'Typography',
+          path: 'components/typography',
+          component: () => import('@/components/Typography'),
+        },
+        // {
+        //   name: 'Notifications',
+        //   path: 'components/notifications',
+        //   component: () => import('@/views/dashboard/component/Notifications'),
+        // },
+        // Tables
+        // Maps
+        // {
+        //   name: 'Google Maps',
+        //   path: 'maps/google-maps',
+        //   component: () => import('@/views/dashboard/maps/GoogleMaps'),
+        // },
       ],
     },
   ],

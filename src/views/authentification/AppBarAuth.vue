@@ -21,7 +21,9 @@
         <v-tab @click="toLogIn">
           Log In
         </v-tab>
-        <v-tab @click="toRegister">Register</v-tab>
+        <v-tab @click="toRegister">
+          Register
+        </v-tab>
       </v-tabs>
     </v-col>
   </v-app-bar>
@@ -32,10 +34,10 @@
     name: 'AppBarAuth',
     methods: {
       toLogIn () {
-        this.$router.push('Login')
+        this.$router.push({ name: 'Login' })
       },
       toRegister () {
-        this.$router.push('Register')
+        this.$router.push({ name: 'Register' })
       },
     },
   }

@@ -7,6 +7,66 @@
     <v-row>
       <v-col
         cols="12"
+        sm="6"
+        lg="3"
+      >
+        <base-material-stats-card
+          color="info"
+          icon="mdi-twitter"
+          title="Followers"
+          value="+245"
+          sub-icon="mdi-clock"
+          sub-text="Just Updated"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        sm="6"
+        lg="3"
+      >
+        <base-material-stats-card
+          color="primary"
+          icon="mdi-poll"
+          title="Website Visits"
+          value="75.521"
+          sub-icon="mdi-tag"
+          sub-text="Tracked from Google Analytics"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        sm="6"
+        lg="3"
+      >
+        <base-material-stats-card
+          color="info"
+          icon="mdi-store"
+          title="Revenue"
+          value="$ 34,245"
+          sub-icon="mdi-calendar"
+          sub-text="Last 24 Hours"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        sm="6"
+        lg="3"
+      >
+        <base-material-stats-card
+          color="secondary"
+          icon="mdi-sofa"
+          title="Bookings"
+          value="184"
+          sub-icon="mdi-alert"
+          sub-icon-color="red"
+          sub-text="Get More Space..."
+        />
+      </v-col>
+      <v-col
+        cols="12"
         lg="4"
       >
         <base-material-chart-card
@@ -216,67 +276,6 @@
 
       <v-col
         cols="12"
-        sm="6"
-        lg="3"
-      >
-        <base-material-stats-card
-          color="info"
-          icon="mdi-twitter"
-          title="Followers"
-          value="+245"
-          sub-icon="mdi-clock"
-          sub-text="Just Updated"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        sm="6"
-        lg="3"
-      >
-        <base-material-stats-card
-          color="primary"
-          icon="mdi-poll"
-          title="Website Visits"
-          value="75.521"
-          sub-icon="mdi-tag"
-          sub-text="Tracked from Google Analytics"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        sm="6"
-        lg="3"
-      >
-        <base-material-stats-card
-          color="info"
-          icon="mdi-store"
-          title="Revenue"
-          value="$ 34,245"
-          sub-icon="mdi-calendar"
-          sub-text="Last 24 Hours"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        sm="6"
-        lg="3"
-      >
-        <base-material-stats-card
-          color="secondary"
-          icon="mdi-sofa"
-          title="Bookings"
-          value="184"
-          sub-icon="mdi-alert"
-          sub-icon-color="red"
-          sub-text="Get More Space..."
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
         md="6"
       >
         <base-material-card
@@ -314,7 +313,6 @@
               v-model="tabs"
               background-color="transparent"
               slider-color="white"
-              :active-class="`${!isDark ? 'accent' : 'white'}--text`"
             >
               <v-tab class="mr-3">
                 <v-icon class="mr-2">
@@ -591,7 +589,6 @@
         },
       }
     },
-
     methods: {
       complete (index) {
         this.list[index] = !this.list[index]

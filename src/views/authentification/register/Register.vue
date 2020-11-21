@@ -28,27 +28,38 @@
                 <v-row>
                   <v-col>
                     <v-text-field
+                      v-model="nom"
                       label="Nom"
                     />
                     <v-text-field
+                      v-model="prenom"
                       label="Prénom"
                     />
                   </v-col>
                   <v-col>
                     <v-text-field
+                      v-model="email"
                       label="Email"
                     />
                     <v-text-field
+                      v-model="password"
                       label="Password"
                     />
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-radio-group row>
+                  <v-radio-group
+                    v-model="role"
+                    row
+                  >
                     <v-radio
+                      color="secondary"
+                      value="Créateur"
                       label="Créateur"
                     />
                     <v-radio
+                      color="secondary"
+                      value="Investisseur"
                       label="Investisseur"
                     />
                   </v-radio-group>
@@ -56,8 +67,9 @@
                 <v-row justify="end">
                   <v-btn
                     color="secondary"
+                    @click="handleRegister"
                   >
-                    Log in
+                    Register
                   </v-btn>
                 </v-row>
               </v-col>
@@ -70,7 +82,42 @@
 </template>
 
 <script>
+  import firebase from 'firebase'
+  import { firestore } from '@/main'
+
   export default {
     name: 'Register',
+    data () {
+      return {
+        email: '',
+        password: '',
+        nom: '',
+        prenom: '',
+        role: '',
+      }
+    },
+    mounted () {
+      this.checkIfLoggedIn()
+    },
+    methods: {
+      checkIfLoggedIn () {
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            this.$router.push('/dashboard')
+          }
+        })
+      },
+      handleRegister () {
+        firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(credential => {
+          return firestore.collection('users').doc(credential.user.uid).set({
+            nom: this.nom,
+            prenom: this.prenom,
+            role: this.role,
+          })
+        }).then(() => {
+          this.$router.push('/auth/login')
+        })
+      },
+    },
   }
 </script>

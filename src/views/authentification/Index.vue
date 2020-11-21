@@ -12,7 +12,7 @@
     name: 'Index',
     components: {
       AppBarAuth,
-      DashboardCoreFooter: () => import('@/views/dashboard/components/core/Footer'),
+      DashboardCoreFooter: () => import('@/components/core/Footer'),
     },
   }
 </script>

@@ -5,13 +5,14 @@
     tag="section"
   >
     <base-v-component
-      heading="Simple Tables"
-      link="components/simple-tables"
+      heading="Historique"
+      subheading="Remonter dans le temps..."
     />
 
     <base-material-card
+      color="primary"
       icon="mdi-clipboard-text"
-      title="Simple Table"
+      title="Historique de navigation profile"
       class="px-5 py-3"
     >
       <v-simple-table>
@@ -102,20 +103,28 @@
     <div class="py-3" />
 
     <base-material-card
-      color="success"
+      color="secondary"
       dark
       icon="mdi-clipboard-plus"
-      title="Table on Dark Background"
+      title="Historique de navigation projet"
       class="px-5 py-3"
     >
       <v-simple-table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Country</th>
-            <th>City</th>
-            <th class="text-right">
+            <th class="secondary--text">
+              ID
+            </th>
+            <th class="secondary--text">
+              Name
+            </th>
+            <th class="secondary--text">
+              Country
+            </th>
+            <th class="secondary--text">
+              City
+            </th>
+            <th class="text-right secondary--text">
               Salary
             </th>
           </tr>

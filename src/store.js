@@ -6,12 +6,16 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     barColor: '#2E383D, rgba(0, 0, 0, .8)',
-    barImage: 'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-1.jpg',
     drawer: null,
+    user: null,
+    userData: null,
   },
   mutations: {
-    SET_BAR_IMAGE (state, payload) {
-      state.barImage = payload
+    SET_USER (state, payload) {
+      state.user = payload
+    },
+    SET_USER_DATA (state, payload) {
+      state.userData = payload
     },
     SET_DRAWER (state, payload) {
       state.drawer = payload

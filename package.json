@@ -15,7 +15,9 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@firebase/firestore": "^2.0.2",
     "core-js": "^3.6.2",
+    "firebase": "^8.0.2",
     "vue": "^2.6.11",
     "vue-gh-pages": "^1.19.1",
     "vue-i18n": "^8.15.3",

@@ -4,7 +4,7 @@
     v-model="drawer"
     :dark="barColor !== 'rgba(228, 226, 226, 1), rgba(255, 255, 255, 0.7)'"
     :expand-on-hover="expandOnHover"
-    mobile-break-point="960"
+    mobile-breakpoint="960"
     app
     width="260"
     v-bind="$attrs"
@@ -63,6 +63,7 @@
           :item="item"
         />
       </template>
+
       <div />
     </v-list>
   </v-navigation-drawer>
@@ -88,43 +89,48 @@
       items: [
         {
           icon: 'mdi-view-dashboard',
-          title: 'dashboard',
-          to: '/app/dashboard',
+          title: 'Dashboard',
+          to: '/dashboard',
+        },
+        {
+          icon: 'mdi-magnify',
+          title: 'Discover',
+          to: '/discover',
         },
         {
           icon: 'mdi-account',
-          title: 'user',
-          to: '/app/pages/user',
+          title: 'Profile',
+          to: '/pages/user',
         },
         {
-          title: 'rtables',
+          title: 'History',
           icon: 'mdi-clipboard-outline',
-          to: '/app/tables/regular-tables',
+          to: '/tables/historique',
         },
         {
           title: 'typography',
           icon: 'mdi-format-font',
-          to: '/app/components/typography',
+          to: '/components/typography',
         },
         {
           title: 'icons',
           icon: 'mdi-chart-bubble',
-          to: '/app/components/icons',
+          to: '/components/icons',
         },
-        {
-          title: 'google',
-          icon: 'mdi-map-marker',
-          to: '/app/maps/google-maps',
-        },
-        {
-          title: 'notifications',
-          icon: 'mdi-bell',
-          to: '/app/components/notifications',
-        },
+        // {
+        //   title: 'google',
+        //   icon: 'mdi-map-marker',
+        //   to: '/maps/google-maps',
+        // },
+        // {
+        //   title: 'notifications',
+        //   icon: 'mdi-bell',
+        //   to: '/components/notifications',
+        // },
         {
           title: 'timeline',
-          icon: 'mdi-bell',
-          to: '/app/pages/timeline',
+          icon: 'mdi-chart-timeline-variant',
+          to: '/pages/timeline',
         },
       ],
     }),

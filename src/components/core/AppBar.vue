@@ -30,7 +30,11 @@
 
     <v-spacer />
 
-    <span>Dark Mode</span>
+    <span
+      :class="`role ${$vuetify.theme.dark ? 'white' : 'primary'}--text`"
+    >{{ userData.role }}</span>
+
+    <span class="ml-5">Dark Mode</span>
 
     <v-switch
       v-model="$vuetify.theme.dark"
@@ -38,28 +42,6 @@
       color="secondary"
       hide-details
     />
-
-    <v-text-field
-      class="ml-10"
-      :label="$t('search')"
-      color="secondary"
-      hide-details
-      style="max-width: 165px;"
-    >
-      <template
-        v-if="$vuetify.breakpoint.mdAndUp"
-        v-slot:append-outer
-      >
-        <v-btn
-          class="mt-n2"
-          elevation="1"
-          fab
-          small
-        >
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-      </template>
-    </v-text-field>
 
     <div class="mx-3" />
 
@@ -115,22 +97,49 @@
         </div>
       </v-list>
     </v-menu>
-
-    <v-btn
-      class="ml-2"
-      min-width="0"
-      text
-      to="/pages/user"
+    <v-menu
+      bottom
+      left
+      offset-y
+      origin="top right"
+      transition="scale-transition"
     >
-      <v-icon>mdi-account</v-icon>
-    </v-btn>
+      <template v-slot:activator="{ attrs, on }">
+        <v-btn
+          class="ml-2"
+          min-width="0"
+          text
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon>mdi-account</v-icon>
+        </v-btn>
+      </template>
+
+      <v-list
+        :tile="false"
+        nav
+      >
+        <div>
+          <app-bar-item
+            v-for="(n, i) in accounts"
+            :key="`item-${i}`"
+          >
+            <v-list-item-title
+              @click="actionAccount(n)"
+              v-text="n"
+            />
+          </app-bar-item>
+        </div>
+      </v-list>
+    </v-menu>
   </v-app-bar>
 </template>
 
 <script>
+  import firebase from 'firebase'
   // Components
   import { VHover, VListItem } from 'vuetify/lib'
-
   // Utilities
   import { mapState, mapMutations } from 'vuex'
 
@@ -178,16 +187,41 @@
         'Another Notification',
         'Another one',
       ],
+      accounts: [
+        'Profile',
+        'Log out',
+      ],
     }),
 
     computed: {
+      userData () {
+        return this.$store.state.userData
+      },
       ...mapState(['drawer']),
     },
 
     methods: {
+      actionAccount (action) {
+        if (action === 'Profile') {
+          this.$router.push('/pages/user')
+        } else {
+          this.logout()
+        }
+      },
+      logout () {
+        firebase.auth().signOut().then(() => {
+          this.$router.push('/auth/login')
+        })
+      },
       ...mapMutations({
         setDrawer: 'SET_DRAWER',
+
       }),
     },
   }
 </script>
+<style>
+.role{
+  font-weight: bold;
+}
+</style>
