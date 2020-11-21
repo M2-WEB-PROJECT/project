@@ -34,7 +34,9 @@
       :class="`role ${$vuetify.theme.dark ? 'white' : 'primary'}--text`"
     >{{ userData.role }}</span>
 
-    <span class="ml-5">Dark Mode</span>
+    <div class="mx-3" />
+
+    <span>Dark Mode</span>
 
     <v-switch
       v-model="$vuetify.theme.dark"
@@ -46,7 +48,6 @@
     <div class="mx-3" />
 
     <v-btn
-      class="ml-2"
       min-width="0"
       text
       to="/"

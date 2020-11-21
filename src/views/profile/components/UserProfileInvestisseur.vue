@@ -28,7 +28,7 @@
             </div>
 
             <div class="subtitle-1 font-weight-light">
-              Complete your profile
+              Be powerful & complete your profile
             </div>
           </template>
 
