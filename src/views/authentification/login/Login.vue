@@ -88,20 +88,13 @@
           this.setDataUser(credential.user.uid)
           this.setUser(credential.user)
           this.$router.push('/dashboard')
-        }).catch(error => {
-          console.log(error)
         })
       },
       setDataUser (uid) {
         firestore.collection('users').doc(uid).get().then(doc => {
           if (doc.exists) {
             this.setUserData(doc.data())
-          } else {
-            // doc.data() will be undefined in this case
-            console.log('No such document!')
           }
-        }).catch(function (error) {
-          console.log('Error getting document:', error)
         })
       },
       async handleGoogleLogin () {
