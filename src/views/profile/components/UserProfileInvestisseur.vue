@@ -244,8 +244,6 @@
         firestore.collection('users').doc(this.uid).get().then(doc => {
           if (doc.exists) {
             this.setUserData(doc.data())
-          } else {
-            // doc.data() will be undefined in this case
           }
         })
       },
