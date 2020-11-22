@@ -56,9 +56,8 @@
           :key="`group-${i}`"
           :item="item"
         />
-
         <base-item
-          v-else
+          v-else-if="hideProject(item)"
           :key="`item-${i}`"
           :item="item"
         />
@@ -84,7 +83,6 @@
         default: false,
       },
     },
-
     data: () => ({
       items: [
         {
@@ -100,12 +98,17 @@
         {
           icon: 'mdi-account',
           title: 'Profile',
-          to: '/pages/user',
+          to: '/profile',
         },
         {
           title: 'History',
           icon: 'mdi-clipboard-outline',
-          to: '/tables/historique',
+          to: '/history',
+        },
+        {
+          title: 'Projects',
+          icon: 'mdi-border-color',
+          to: '/projects',
         },
         {
           title: 'typography',
@@ -130,11 +133,10 @@
         {
           title: 'timeline',
           icon: 'mdi-chart-timeline-variant',
-          to: '/pages/timeline',
+          to: '/timeline',
         },
       ],
     }),
-
     computed: {
       ...mapState(['barColor']),
       drawer: {
@@ -154,9 +156,18 @@
           title: this.$t('avatar'),
         }
       },
+      userData () {
+        return this.$store.state.userData
+      },
+      isInvestisseur () {
+        return this.userData.role === 'Investisseur'
+      },
     },
 
     methods: {
+      hideProject (item) {
+        return !this.isInvestisseur || (this.isInvestisseur && item.title !== 'Projects')
+      },
       mapItem (item) {
         return {
           ...item,

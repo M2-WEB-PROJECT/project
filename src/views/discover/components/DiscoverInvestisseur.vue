@@ -82,6 +82,7 @@
                 color="primary"
                 rounded
                 class="mr-0"
+                @click="addToHistory(project)"
               >
                 En savoir plus
               </v-btn>
@@ -93,6 +94,9 @@
   </v-container>
 </template>
 <script>
+  import { firestore } from '@/main'
+  import { mapMutations } from 'vuex'
+
   export default {
     name: 'UserProfileInvestisseur',
     data () {
@@ -112,6 +116,7 @@
         projectsFiltered: [],
         tags: ['IT', 'web', 'crypto-currency', 'security'],
         values: ['IT', 'web', 'crypto-currency', 'security'],
+        history: [],
       }
     },
     computed: {
@@ -121,6 +126,9 @@
       userData () {
         return this.$store.state.userData
       },
+      uid () {
+        return this.$store.state.user.uid
+      },
     },
     watch: {
       searchNameInput () {
@@ -129,8 +137,31 @@
     },
     mounted () {
       this.projectsFiltered = this.projects
+      this.history = this.userData.history
+    },
+    beforeDestroy () {
+      this.updateHistory()
+      this.setDataUser()
     },
     methods: {
+      setDataUser () {
+        firestore.collection('users').doc(this.uid).get().then(doc => {
+          if (doc.exists) {
+            this.setUserData(doc.data())
+          }
+        })
+      },
+      ...mapMutations({
+        setUserData: 'SET_USER_DATA',
+      }),
+      async updateHistory () {
+        await firestore.collection('users').doc(this.uid).update({
+          history: this.history,
+        })
+      },
+      addToHistory (project) {
+        this.history.push(project)
+      },
       search () {
         this.loading = true
         if (this.searchInput !== '') {

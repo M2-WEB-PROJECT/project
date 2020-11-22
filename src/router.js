@@ -27,7 +27,7 @@ export default new Router({
     },
     {
       path: '/',
-      component: () => import('@/views/dashboard/Index'),
+      component: () => import('@/views/Index'),
       redirect: { name: 'Dashboard' },
       children: [
         // Dashboard
@@ -38,8 +38,8 @@ export default new Router({
         },
         // Pages
         {
-          name: 'User Profile',
-          path: 'pages/user',
+          name: 'Profile',
+          path: '/profile',
           component: () => import('@/views/profile/Index'),
         },
         {
@@ -49,12 +49,29 @@ export default new Router({
         },
         {
           name: 'History',
-          path: 'tables/historique',
+          path: '/history',
           component: () => import('@/views/historique/components/HistoriqueInvestisseur'),
         },
         {
+          name: 'Projects',
+          path: '/projects',
+          component: () => import('@/views/project/ProjectList'),
+        },
+        {
+          name: 'Project',
+          path: '/project',
+          component: () => import('@/views/project/Project'),
+          props: true,
+        },
+        {
+          name: 'ProjectForm',
+          path: '/project/form',
+          component: () => import('@/views/project/ProjectForm'),
+          props: true,
+        },
+        {
           name: 'TimeLine',
-          path: 'pages/timeline',
+          path: '/timeline',
           component: () => import('@/views/timeline/Timeline'),
         },
         {
