@@ -84,6 +84,11 @@ export default new Router({
           path: 'components/typography',
           component: () => import('@/components/Typography'),
         },
+        {
+          name: 'Test',
+          path: '/test',
+          component: () => import('@/views/test/Test'),
+        },
         // {
         //   name: 'Notifications',
         //   path: 'components/notifications',

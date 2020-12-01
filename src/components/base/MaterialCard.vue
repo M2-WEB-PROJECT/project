@@ -92,8 +92,8 @@
 
     props: {
       avatar: {
-        type: String,
-        default: '',
+        type: [String, Object],
+        default: () => {},
       },
       color: {
         type: String,

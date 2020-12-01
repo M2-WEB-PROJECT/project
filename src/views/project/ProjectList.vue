@@ -34,8 +34,8 @@
     </v-row>
     <v-row>
       <transition
-        v-for="project in projects"
-        :key="project.name"
+        v-for="(project, i) in projects"
+        :key="i"
         name="fade"
       >
         <v-col
@@ -43,21 +43,29 @@
         >
           <base-material-card
             class="v-card-profile"
-            :avatar="userData.photoURL"
+            :avatar="project.photoProjectURL"
           >
             <v-card-text class="text-center">
               <h6 class="display-1 mb-1 grey--text">
-                {{ project.name }}
+                {{ project.nameProject }}
               </h6>
 
               <h4 class="display-2 font-weight-light mb-3 black--text">
-                John Doe
+                {{ userData.prenom }} {{ userData.nom }}
               </h4>
 
               <p class="font-weight-light grey--text">
-                Projet informatique de niveau stratospherique
+                {{ project.abstract }}
               </p>
 
+              <v-btn
+                color="primary"
+                rounded
+                class="mr-5"
+                @click="toEditProject(project)"
+              >
+                Edit
+              </v-btn>
               <v-btn
                 color="primary"
                 rounded
@@ -75,16 +83,13 @@
 </template>
 
 <script>
+  import { firestore } from '@/main'
+
   export default {
     name: 'Project',
     data () {
       return {
-        projects: [
-          { name: 'Project 1' },
-          { name: 'Project 2' },
-          { name: 'Project 3' },
-          { name: 'Project 4' },
-        ],
+        projects: [],
       }
     },
     computed: {
@@ -92,7 +97,27 @@
         return this.$store.state.userData
       },
     },
+    mounted () {
+      this.getProjects()
+    },
     methods: {
+      getProjects () {
+        this.userData.projects.forEach(item => {
+          firestore.collection('projects').doc(item).get().then(doc => {
+            if (doc.exists) {
+              const project = doc.data()
+              project.uid = item
+              this.projects.push(project)
+            }
+          })
+        })
+      },
+      toEditProject (project) {
+        this.$router.push({
+          name: 'ProjectForm',
+          params: { project: project },
+        })
+      },
       toProjectForm () {
         this.$router.push({ name: 'ProjectForm' })
       },

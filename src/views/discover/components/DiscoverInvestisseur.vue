@@ -50,7 +50,6 @@
           </v-col>
         </v-row>
       </v-card-text>
-      <v-divider />
     </v-card>
     <v-row>
       <transition

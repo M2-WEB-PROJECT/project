@@ -82,7 +82,7 @@
 </template>
 
 <script>
-  import firebase from 'firebase'
+  import firebase from 'firebase/app'
   import { firestore } from '@/main'
 
   export default {
@@ -113,6 +113,7 @@
             nom: this.nom,
             prenom: this.prenom,
             role: this.role,
+            projects: [],
           })
         }).then(() => {
           this.$router.push('/auth/login')

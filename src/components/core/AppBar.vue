@@ -138,7 +138,7 @@
 </template>
 
 <script>
-  import firebase from 'firebase'
+  import firebase from 'firebase/app'
   // Components
   import { VHover, VListItem } from 'vuetify/lib'
   // Utilities

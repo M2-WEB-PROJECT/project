@@ -12,21 +12,69 @@
       <v-col>
         <base-material-card
           class="v-card-profile"
-          :avatar="userData.photoURL"
+          :avatar="project.photoProjectURL"
         >
           <v-card-text class="text-center">
-            <h6 class="display-1 mb-1 grey--text">
-              {{ project.name }}
-            </h6>
-
             <h4 class="display-2 font-weight-light mb-3 black--text">
-              John Doe
+              {{ project.name }}
             </h4>
 
+            <h6 class="display-1 mb-1 grey--text">
+              {{ userData.prenom }} {{ userData.nom }}
+            </h6>
+
+            <h5 class="display-2 font-weight-light mb-3 black--text">
+              <v-btn
+                v-for="tag in project.tags"
+                :key="tag"
+                small
+                :color="colorTag(tag)"
+              >
+                {{ tag }}
+              </v-btn>
+            </h5>
+
             <p class="font-weight-light grey--text">
-              Projet informatique de niveau stratospherique
+              {{ project.bio }}
             </p>
           </v-card-text>
+          <v-row justify="center">
+            <v-col cols="9">
+              <v-card
+                class="mx-auto"
+              >
+                <v-carousel v-model="carrousel">
+                  <v-carousel-item
+                    v-for="(slide, i) in project.slidesURL"
+                    :key="i"
+                  >
+                    <v-sheet
+                      height="100%"
+                      tile
+                    >
+                      <v-row
+                        align="center"
+                        justify="center"
+                      >
+                        <v-img :src="slide" />
+                      </v-row>
+                    </v-sheet>
+                  </v-carousel-item>
+                </v-carousel>
+                <v-list two-line>
+                  <v-list-item>
+                    <v-list-item-avatar>
+                      <v-img :src="userData.photoURL" />
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title>{{ userData.prenom }} {{ userData.nom }}</v-list-item-title>
+                      <v-list-item-subtitle>Author</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-col>
+          </v-row>
         </base-material-card>
       </v-col>
     </v-row>
@@ -40,9 +88,25 @@
         default: () => {},
       },
     },
+    data () {
+      return {
+        carrousel: 0,
+      }
+    },
     computed: {
       userData () {
         return this.$store.state.userData
+      },
+    },
+    methods: {
+      colorTag (tag) {
+        switch (tag) {
+          case 'web': return 'primary'
+          case 'crypto-currency': return 'secondary'
+          case 'security': return 'info'
+          case 'IT': return 'info'
+          default: return ''
+        }
       },
     },
   }

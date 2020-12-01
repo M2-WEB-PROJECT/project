@@ -120,6 +120,11 @@
           icon: 'mdi-chart-bubble',
           to: '/components/icons',
         },
+        {
+          title: 'test',
+          icon: 'mdi-chart-bubble',
+          to: '/test',
+        },
         // {
         //   title: 'google',
         //   icon: 'mdi-map-marker',
