@@ -86,6 +86,7 @@
 </template>
 
 <script>
+  import firebase from 'firebase'
   import { firestore } from '@/main'
   import { mapMutations } from 'vuex'
 
@@ -112,14 +113,30 @@
       async deleteProject (project) {
         this.loading = true
         this.setUserProjects(this.userData.projects.filter(item => project.uid !== item))
-        await firestore.collection('projects').doc(project.uid).delete().then(() => {
-          firestore.collection('users').doc(this.uid).update({
+        await firestore.collection('projects').doc(project.uid).delete().then(async () => {
+          await this.deleteFolderRecursive(`users/${this.uid}/projects/${project.uid}`)
+          await firestore.collection('users').doc(this.uid).update({
             projects: this.userData.projects,
           }).then(() => {
             this.loading = false
             this.projects = this.projects.filter(item => project.uid !== item.uid)
           })
         })
+      },
+      async deleteFile (filePath) {
+        const ref = firebase.storage().ref(filePath)
+        return await ref.delete()
+      },
+      async deleteFolderRecursive (folderPath) {
+        const ref = firebase.storage().ref(folderPath)
+        const list = await ref.listAll()
+
+        for await (const fileRef of list.items) {
+          await this.deleteFile(fileRef.fullPath)
+        }
+        for await (const folderRef of list.prefixes) {
+          await this.deleteFolderRecursive(folderRef.fullPath)
+        }
       },
       getProjects () {
         this.userData.projects.forEach(item => {

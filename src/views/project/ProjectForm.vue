@@ -357,10 +357,9 @@
           }
           let slidesURL = []
           if (this.slides.length) {
-            // eslint-disable-next-line
-            for (let [index, item] of this.slides.entries()) {
-              await firebase.storage().ref(`/users/${this.uid}/projects/${this.projectParams.uid}/project${index}.jpg`).put(item).then(async () => {
-                await firebase.storage().ref(`users/${this.uid}/projects/${this.projectParams.uid}/project${index}.jpg`).getDownloadURL().then(imgURL => {
+            for await (const [index, item] of this.slides.entries()) {
+              await firebase.storage().ref(`/users/${this.uid}/projects/${success.id}/project${index}.jpg`).put(item).then(async () => {
+                await firebase.storage().ref(`users/${this.uid}/projects/${success.id}/project${index}.jpg`).getDownloadURL().then(imgURL => {
                   slidesURL.push(imgURL)
                 })
               })
@@ -401,8 +400,7 @@
         }
         if (this.slides.length) {
           const slidesURL = []
-          // eslint-disable-next-line
-          for (let [index, item] of this.slides.entries()) {
+          for await (const [index, item] of this.slides.entries()) {
             await firebase.storage().ref(`/users/${this.uid}/projects/${uid}/project${index}.jpg`).put(item).then(async () => {
               await firebase.storage().ref(`users/${this.uid}/projects/${uid}/project${index}.jpg`).getDownloadURL().then(imgURL => {
                 slidesURL.push(imgURL)
