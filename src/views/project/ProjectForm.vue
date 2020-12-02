@@ -393,6 +393,7 @@
       },
       async editProject () {
         this.loading = true
+        const uid = this.projectParams.uid
         if (this.photoProject) {
           let photoProjectURL = null
           await firebase.storage().ref(`users/${this.uid}/projects/${this.projectParams.uid}/project.jpg`).put(this.photoProject)
@@ -404,21 +405,23 @@
             })
           })
         }
-        if (this.photoProject) {
+        if (this.slides) {
           const slidesURL = []
-          this.slides.forEach((item, index) => {
-            firebase.storage().ref(`/users/${this.uid}/projects/${this.projectParams.uid}/project${index}.jpg`).put(item).then(() => {
-              firebase.storage().ref(`users/${this.uid}/projects/${this.projectParams.uid}/project${index}.jpg`).getDownloadURL().then(imgURL => {
+          // eslint-disable-next-line
+          for (let [index, item] of this.slides.entries()) {
+            await firebase.storage().ref(`/users/${this.uid}/projects/${uid}/project${index}.jpg`).put(item).then(async () => {
+              await firebase.storage().ref(`users/${this.uid}/projects/${uid}/project${index}.jpg`).getDownloadURL().then(imgURL => {
                 slidesURL.push(imgURL)
               })
-            }).then(() => {
-              firestore.collection('projects').doc(this.projectParams.uid).update({
-                slidesURL: this.slidesURL,
-              })
             })
+            console.log(index)
+          }
+          console.log('up')
+          firestore.collection('projects').doc(uid).update({
+            slidesURL: slidesURL,
           })
         }
-        firestore.collection('projects').doc(this.projectParams.uid).update({
+        firestore.collection('projects').doc(uid).update({
           name: this.nameProject,
           emailPro: this.emailPro,
           tags: this.tags,
