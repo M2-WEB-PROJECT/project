@@ -339,7 +339,6 @@
           abstract: this.abstractProject,
         }).then(async (success) => {
           this.userData.projects.push(success.id)
-          const slidesURL = []
           let photoProjectURL = 'https://dpcpa.com/wp-content/uploads/2015/01/thumbnail-default.jpg'
           if (this.photoProject) {
             await firebase.storage().ref(`users/${this.uid}/projects/${success.id}/project.jpg`).put(this.photoProject).then(() => {
@@ -356,6 +355,7 @@
               photoProjectURL: photoProjectURL,
             })
           }
+          let slidesURL = []
           if (!this.slides) {
             this.slides.forEach((item, index) => {
               firebase.storage().ref(`users/${this.uid}/projects/${success.id}/project${index}.jpg`).put(item).then(() => {
@@ -375,12 +375,20 @@
               })
             })
           } else {
-            firestore.collection('users').doc(this.uid).update({
-              projects: this.userData.projects,
-            }).then(() => {
-              this.toProjectList()
+            slidesURL = [
+              'https://dpcpa.com/wp-content/uploads/2015/01/thumbnail-default.jpg',
+              'https://dpcpa.com/wp-content/uploads/2015/01/thumbnail-default.jpg',
+              'https://dpcpa.com/wp-content/uploads/2015/01/thumbnail-default.jpg',
+            ]
+            await firestore.collection('projects').doc(success.id).update({
+              slidesURL: slidesURL,
             })
           }
+          await firestore.collection('users').doc(this.uid).update({
+            projects: this.userData.projects,
+          }).then(() => {
+            this.toProjectList()
+          })
         })
       },
       async editProject () {
@@ -405,7 +413,7 @@
               })
             }).then(() => {
               firestore.collection('projects').doc(this.projectParams.uid).update({
-                slidesURL: slidesURL,
+                slidesURL: this.slidesURL,
               })
             })
           })

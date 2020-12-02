@@ -9,23 +9,23 @@
       subheading="Be inventive..."
     />
     <v-row>
-      <v-col
-        class="text-center"
-      >
-        <v-btn
-          class="mb-15"
-          x-large
-          color="secondary"
-          @click="toProjectList"
-        >
-          <v-icon
-            dark
-            class="mr-3"
+      <v-col>
+        <div class="text-center">
+          <v-btn
+            class="mb-15"
+            x-large
+            color="secondary"
+            @click="toProjectList"
           >
-            mdi-arrow-left
-          </v-icon>
-          Project List
-        </v-btn>
+            <v-icon
+              dark
+              class="mr-3"
+            >
+              mdi-arrow-left
+            </v-icon>
+            Project List
+          </v-btn>
+        </div>
         <base-material-card
           class="v-card-profile"
           :avatar="project.photoProjectURL"
