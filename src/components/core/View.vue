@@ -1,6 +1,8 @@
 <template>
   <v-main>
-    <router-view />
+    <div class="height100">
+      <router-view />
+    </div>
     <dashboard-core-footer />
   </v-main>
 </template>
@@ -14,3 +16,8 @@
     },
   }
 </script>
+<style>
+.height100{
+  min-height: 31.2em;
+}
+</style>

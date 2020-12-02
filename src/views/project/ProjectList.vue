@@ -44,10 +44,13 @@
           <base-material-card
             class="v-card-profile"
             :avatar="project.photoProjectURL"
+            delete-icon
+            :loading="loading"
+            @delete="deleteProject(project)"
           >
             <v-card-text class="text-center">
               <h6 class="display-1 mb-1 grey--text">
-                {{ project.nameProject }}
+                {{ project.name }}
               </h6>
 
               <h4 class="display-2 font-weight-light mb-3 black--text">
@@ -84,15 +87,20 @@
 
 <script>
   import { firestore } from '@/main'
+  import { mapMutations } from 'vuex'
 
   export default {
     name: 'Project',
     data () {
       return {
+        loading: false,
         projects: [],
       }
     },
     computed: {
+      uid () {
+        return this.$store.state.user.uid
+      },
       userData () {
         return this.$store.state.userData
       },
@@ -101,6 +109,18 @@
       this.getProjects()
     },
     methods: {
+      async deleteProject (project) {
+        this.loading = true
+        this.setUserProjects(this.userData.projects.filter(item => project.uid !== item))
+        await firestore.collection('projects').doc(project.uid).delete().then(() => {
+          firestore.collection('users').doc(this.uid).update({
+            projects: this.userData.projects,
+          }).then(() => {
+            this.loading = false
+            this.projects = this.projects.filter(item => project.uid !== item.uid)
+          })
+        })
+      },
       getProjects () {
         this.userData.projects.forEach(item => {
           firestore.collection('projects').doc(item).get().then(doc => {
@@ -127,10 +147,9 @@
           params: { project: project },
         })
       },
+      ...mapMutations({
+        setUserProjects: 'SET_PROJECTS',
+      }),
     },
   }
 </script>
-
-<style scoped>
-
-</style>

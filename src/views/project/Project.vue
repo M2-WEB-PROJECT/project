@@ -9,7 +9,23 @@
       subheading="Be inventive..."
     />
     <v-row>
-      <v-col>
+      <v-col
+        class="text-center"
+      >
+        <v-btn
+          class="mb-15"
+          x-large
+          color="secondary"
+          @click="toProjectList"
+        >
+          <v-icon
+            dark
+            class="mr-3"
+          >
+            mdi-arrow-left
+          </v-icon>
+          Project List
+        </v-btn>
         <base-material-card
           class="v-card-profile"
           :avatar="project.photoProjectURL"
@@ -99,6 +115,9 @@
       },
     },
     methods: {
+      toProjectList () {
+        this.$router.push({ name: 'Projects' })
+      },
       colorTag (tag) {
         switch (tag) {
           case 'web': return 'primary'

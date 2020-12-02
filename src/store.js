@@ -11,6 +11,9 @@ export default new Vuex.Store({
     userData: null,
   },
   mutations: {
+    SET_PROJECTS (state, payload) {
+      state.userData.projects = payload
+    },
     SET_USER (state, payload) {
       state.user = payload
     },

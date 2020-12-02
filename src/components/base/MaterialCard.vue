@@ -4,6 +4,24 @@
     :class="classes"
     class="v-card--material pa-3"
   >
+    <div
+      v-if="deleteIcon"
+      class="text-right"
+    >
+      <v-btn
+        small
+        :color="loading? 'error': 'accent'"
+        :loading="loading"
+        @click="$emit('delete')"
+      >
+        <v-icon
+          size="25"
+          color="error"
+        >
+          mdi-delete
+        </v-icon>
+      </v-btn>
+    </div>
     <div class="d-flex grow flex-wrap">
       <v-avatar
         v-if="avatar"
@@ -13,7 +31,6 @@
       >
         <v-img :src="avatar" />
       </v-avatar>
-
       <v-sheet
         v-else
         :class="{
@@ -91,6 +108,14 @@
     name: 'MaterialCard',
 
     props: {
+      deleteIcon: {
+        type: Boolean,
+        default: false,
+      },
+      loading: {
+        type: Boolean,
+        default: false,
+      },
       avatar: {
         type: [String, Object],
         default: () => {},

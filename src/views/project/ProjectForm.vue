@@ -138,6 +138,12 @@
                   class="mr-5"
                   @click="toProjectList"
                 >
+                  <v-icon
+                    dark
+                    class="mr-3"
+                  >
+                    mdi-arrow-left
+                  </v-icon>
                   Back
                 </v-btn>
                 <v-btn
@@ -245,13 +251,17 @@
         loading: false,
         carrousel: 0,
         photoProject: null,
-        photoProjectURL: null,
+        photoProjectURL: 'https://dpcpa.com/wp-content/uploads/2015/01/thumbnail-default.jpg',
         nameProject: '',
         budgetProject: 0,
         bioProject: '',
         abstractProject: '',
         slides: [],
-        slidesURL: [],
+        slidesURL: [
+          'https://dpcpa.com/wp-content/uploads/2015/01/thumbnail-default.jpg',
+          'https://dpcpa.com/wp-content/uploads/2015/01/thumbnail-default.jpg',
+          'https://dpcpa.com/wp-content/uploads/2015/01/thumbnail-default.jpg',
+        ],
         emailPro: '',
         snackbar: false,
         cycle: false,
@@ -330,29 +340,47 @@
         }).then(async (success) => {
           this.userData.projects.push(success.id)
           const slidesURL = []
-          let photoProjectURL = null
-          await firebase.storage().ref(`users/${this.uid}/projects/${success.id}/project.jpg`).put(this.photoProject)
-          await firebase.storage().ref(`users/${this.uid}/projects/${success.id}/project.jpg`).getDownloadURL().then(imgURL => {
-            photoProjectURL = imgURL
-          })
-          this.slides.forEach((item, index) => {
-            firebase.storage().ref(`users/${this.uid}/projects/${success.id}/project${index}.jpg`).put(item).then(() => {
-              firebase.storage().ref(`users/${this.uid}/projects/${success.id}/project${index}.jpg`).getDownloadURL().then(imgURL => {
-                slidesURL.push(imgURL)
+          let photoProjectURL = 'https://dpcpa.com/wp-content/uploads/2015/01/thumbnail-default.jpg'
+          if (this.photoProject) {
+            await firebase.storage().ref(`users/${this.uid}/projects/${success.id}/project.jpg`).put(this.photoProject).then(() => {
+              firebase.storage().ref(`users/${this.uid}/projects/${success.id}/project.jpg`).getDownloadURL().then(imgURL => {
+                photoProjectURL = imgURL
               }).then(() => {
                 firestore.collection('projects').doc(success.id).update({
-                  slidesURL: slidesURL,
                   photoProjectURL: photoProjectURL,
+                })
+              })
+            })
+          } else {
+            await firestore.collection('projects').doc(success.id).update({
+              photoProjectURL: photoProjectURL,
+            })
+          }
+          if (!this.slides) {
+            this.slides.forEach((item, index) => {
+              firebase.storage().ref(`users/${this.uid}/projects/${success.id}/project${index}.jpg`).put(item).then(() => {
+                firebase.storage().ref(`users/${this.uid}/projects/${success.id}/project${index}.jpg`).getDownloadURL().then(imgURL => {
+                  slidesURL.push(imgURL)
                 }).then(() => {
-                  firestore.collection('users').doc(this.uid).update({
-                    projects: this.userData.projects,
+                  firestore.collection('projects').doc(success.id).update({
+                    slidesURL: slidesURL,
                   }).then(() => {
-                    this.toProjectList()
+                    firestore.collection('users').doc(this.uid).update({
+                      projects: this.userData.projects,
+                    }).then(() => {
+                      this.toProjectList()
+                    })
                   })
                 })
               })
             })
-          })
+          } else {
+            firestore.collection('users').doc(this.uid).update({
+              projects: this.userData.projects,
+            }).then(() => {
+              this.toProjectList()
+            })
+          }
         })
       },
       async editProject () {
