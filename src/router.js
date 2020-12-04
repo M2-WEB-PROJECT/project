@@ -34,7 +34,7 @@ export default new Router({
         {
           name: 'Dashboard',
           path: 'dashboard',
-          component: () => import('@/views/dashboard/Dashboard'),
+          component: () => import('@/views/dashboard/Index'),
         },
         // Pages
         {
@@ -50,7 +50,7 @@ export default new Router({
         {
           name: 'History',
           path: '/history',
-          component: () => import('@/views/historique/components/HistoriqueInvestisseur'),
+          component: () => import('@/views/historique/Index'),
         },
         {
           name: 'Projects',

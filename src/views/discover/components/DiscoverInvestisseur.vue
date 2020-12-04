@@ -62,28 +62,55 @@
         >
           <base-material-card
             class="v-card-profile"
-            :avatar="userData.photoURL"
+            :avatar="project.photoProjectURL"
           >
             <v-card-text class="text-center">
+              <v-row
+                justify="center"
+                class="mb-3"
+              >
+                <v-btn
+                  v-for="tag in project.tags"
+                  :key="tag"
+                  x-small
+                  :color="colorTag(tag)"
+                >
+                  {{ tag }}
+                </v-btn>
+              </v-row>
+
               <h6 class="display-1 mb-1 grey--text">
                 {{ project.name }}
               </h6>
 
               <h4 class="display-2 font-weight-light mb-3 black--text">
-                John Doe
+                {{ project.firstNameAuthor }} {{ project.lastNameAuthor }}
               </h4>
 
               <p class="font-weight-light grey--text">
-                Projet informatique de niveau stratospherique
+                {{ project.abstract }}
               </p>
 
               <v-btn
                 color="primary"
                 rounded
-                class="mr-0"
+                class="mr-2"
+                small
+                :disabled="hasAccessProjects(project)"
                 @click="addToHistory(project)"
               >
                 En savoir plus
+              </v-btn>
+              <v-btn
+                v-show="hasAccessProjects(project)"
+                color="secondary"
+                rounded
+                class="mr-0"
+                small
+                :disabled="hasDemandAccessProjects(project)"
+                @click="demandAccess(project)"
+              >
+                Demander l'acces
               </v-btn>
             </v-card-text>
           </base-material-card>
@@ -97,21 +124,14 @@
   import { mapMutations } from 'vuex'
 
   export default {
-    name: 'UserProfileInvestisseur',
+    name: 'DiscoverInvestisseur',
     data () {
       return {
         searchNameInput: '',
         searchBudgetMinInput: '',
         searchBudgetMaxInput: '',
         loading: false,
-        projects: [
-          { name: 'Project 1' },
-          { name: 'Project 2' },
-          { name: 'Project 3' },
-          { name: 'Project 4' },
-          { name: 'Project 5' },
-          { name: 'Project 6' },
-        ],
+        projects: [],
         projectsFiltered: [],
         tags: ['IT', 'web', 'crypto-currency', 'security'],
         values: ['IT', 'web', 'crypto-currency', 'security'],
@@ -135,6 +155,7 @@
       },
     },
     mounted () {
+      this.getProjects()
       this.projectsFiltered = this.projects
       this.history = this.userData.history
     },
@@ -143,6 +164,40 @@
       this.setDataUser()
     },
     methods: {
+      hasAccessProjects (project) {
+        return !project.accessProject.includes(this.uid)
+      },
+      hasDemandAccessProjects (project) {
+        return project.accessDemand.includes(this.uid)
+      },
+      async demandAccess (project) {
+        project.accessDemand.push(this.uid)
+        await firestore.collection('projects').doc(project.uid).update({
+          accessDemand: project.accessDemand,
+        }).then(() => {
+          this.getProjects()
+        })
+      },
+      colorTag (tag) {
+        switch (tag) {
+          case 'web': return 'primary'
+          case 'crypto-currency': return 'secondary'
+          case 'security': return 'info'
+          case 'IT': return 'info'
+          default: return ''
+        }
+      },
+      async getProjects () {
+        await firestore.collection('projects').get().then(projects => {
+          this.projects = projects.docs.map(doc => {
+            return {
+              uid: doc.id,
+              ...doc.data(),
+            }
+          })
+          this.search()
+        })
+      },
       setDataUser () {
         firestore.collection('users').doc(this.uid).get().then(doc => {
           if (doc.exists) {
@@ -152,6 +207,7 @@
       },
       ...mapMutations({
         setUserData: 'SET_USER_DATA',
+        setAccessProjects: 'SET_ACCESS_PROJECTS',
       }),
       async updateHistory () {
         await firestore.collection('users').doc(this.uid).update({

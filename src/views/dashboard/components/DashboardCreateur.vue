@@ -276,7 +276,6 @@
 
       <v-col
         cols="12"
-        md="6"
       >
         <base-material-card
           color="primary"
@@ -284,25 +283,63 @@
         >
           <template v-slot:heading>
             <div class="display-2 font-weight-light">
-              Employees Stats
+              Demande d'Acces aux Projets
             </div>
 
             <div class="subtitle-1 font-weight-light">
-              New employees on 15th September, 2016
+              Nouvelle demande d'accees au projet
             </div>
           </template>
           <v-card-text>
             <v-data-table
               :headers="headers"
-              :items="items"
-            />
+              :items="demands"
+            >
+              <template
+                v-slot:item.action="{item}"
+              >
+                <v-row>
+                  <v-col
+                    cols="12"
+                    md="2"
+                  >
+                    <v-btn
+                      icon
+                      color="success"
+                      @click="accept(item)"
+                    >
+                      <v-icon
+                        size="30"
+                      >
+                        mdi-checkbox-marked-circle-outline
+                      </v-icon>
+                    </v-btn>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    md="2"
+                  >
+                    <v-btn
+                      icon
+                      color="error"
+                      @click="refuse(item)"
+                    >
+                      <v-icon
+                        size="30"
+                      >
+                        mdi-close
+                      </v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </template>
+            </v-data-table>
           </v-card-text>
         </base-material-card>
       </v-col>
 
       <v-col
         cols="12"
-        md="6"
       >
         <base-material-card
           class="px-5 py-3"
@@ -316,21 +353,15 @@
             >
               <v-tab class="mr-3">
                 <v-icon class="mr-2">
-                  mdi-bug
+                  mdi-code-tags
                 </v-icon>
-                Bugs
+                Acces Autorisé
               </v-tab>
               <v-tab class="mr-3">
                 <v-icon class="mr-2">
-                  mdi-code-tags
+                  mdi-bug
                 </v-icon>
-                Website
-              </v-tab>
-              <v-tab>
-                <v-icon class="mr-2">
-                  mdi-cloud
-                </v-icon>
-                Server
+                Acces Refusé
               </v-tab>
             </v-tabs>
           </template>
@@ -339,50 +370,51 @@
             v-model="tabs"
             class="transparent"
           >
-            <v-tab-item
-              v-for="n in 3"
-              :key="n"
-            >
-              <v-card-text>
-                <template v-for="(task, i) in tasks[tabs]">
-                  <v-row
-                    :key="i"
-                    align="center"
+            <v-card-text>
+              <template v-for="(demand, i) in demandsAccepted[tabs]">
+                <v-row
+                  :key="i"
+                  align="center"
+                >
+                  <v-col
+                    cols="12"
+                    md="3"
                   >
-                    <v-col cols="1">
-                      <v-list-item-action>
-                        <v-checkbox
-                          v-model="task.value"
-                          color="secondary"
-                        />
-                      </v-list-item-action>
-                    </v-col>
-
-                    <v-col cols="9">
-                      <div
-                        class="font-weight-light"
-                        v-text="task.text"
-                      />
-                    </v-col>
-
-                    <v-col
-                      cols="2"
-                      class="text-right"
+                    <span>
+                      {{ demand.project.name }}
+                    </span>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    md="2"
+                  >
+                    <span>
+                      {{ demand.investisseur.prenom }}
+                    </span>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    md="2"
+                  >
+                    <span>
+                      {{ demand.investisseur.nom }}
+                    </span>
+                  </v-col>
+                  <v-col
+                    cols="2"
+                    class="text-right"
+                  >
+                    <v-icon
+                      size="30"
+                      color="error"
+                      class="mx-1"
                     >
-                      <v-icon class="mx-1">
-                        mdi-pencil
-                      </v-icon>
-                      <v-icon
-                        color="error"
-                        class="mx-1"
-                      >
-                        mdi-close
-                      </v-icon>
-                    </v-col>
-                  </v-row>
-                </template>
-              </v-card-text>
-            </v-tab-item>
+                      mdi-close
+                    </v-icon>
+                  </v-col>
+                </v-row>
+              </template>
+            </v-card-text>
           </v-tabs-items>
         </base-material-card>
       </v-col>
@@ -391,8 +423,10 @@
 </template>
 
 <script>
+  import { firestore } from '@/main'
+
   export default {
-    name: 'DashboardDashboard',
+    name: 'DashboardCreateur',
 
     data () {
       return {
@@ -473,114 +507,30 @@
         headers: [
           {
             sortable: false,
-            text: 'ID',
-            value: 'id',
+            text: 'Name Project',
+            value: 'project.name',
           },
           {
             sortable: false,
-            text: 'Name',
-            value: 'name',
+            text: 'First Name',
+            value: 'investisseur.prenom',
           },
           {
             sortable: false,
-            text: 'Salary',
-            value: 'salary',
-            align: 'right',
+            text: 'Last Name',
+            value: 'investisseur.nom',
           },
           {
             sortable: false,
-            text: 'Country',
-            value: 'country',
-            align: 'right',
-          },
-          {
-            sortable: false,
-            text: 'City',
-            value: 'city',
-            align: 'right',
+            text: 'Action',
+            value: 'action',
           },
         ],
-        items: [
-          {
-            id: 1,
-            name: 'Dakota Rice',
-            country: 'Niger',
-            city: 'Oud-Tunrhout',
-            salary: '$35,738',
-          },
-          {
-            id: 2,
-            name: 'Minerva Hooper',
-            country: 'Curaçao',
-            city: 'Sinaai-Waas',
-            salary: '$23,738',
-          },
-          {
-            id: 3,
-            name: 'Sage Rodriguez',
-            country: 'Netherlands',
-            city: 'Overland Park',
-            salary: '$56,142',
-          },
-          {
-            id: 4,
-            name: 'Philip Chanley',
-            country: 'Korea, South',
-            city: 'Gloucester',
-            salary: '$38,735',
-          },
-          {
-            id: 5,
-            name: 'Doris Greene',
-            country: 'Malawi',
-            city: 'Feldkirchen in Kārnten',
-            salary: '$63,542',
-          },
-        ],
+        demands: [],
         tabs: 0,
-        tasks: {
-          0: [
-            {
-              text: 'Sign contract for "What are conference organizers afraid of?"',
-              value: true,
-            },
-            {
-              text: 'Lines From Great Russian Literature? Or E-mails From My Boss?',
-              value: false,
-            },
-            {
-              text: 'Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit',
-              value: false,
-            },
-            {
-              text: 'Create 4 Invisible User Experiences you Never Knew About',
-              value: true,
-            },
-          ],
-          1: [
-            {
-              text: 'Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit',
-              value: true,
-            },
-            {
-              text: 'Sign contract for "What are conference organizers afraid of?"',
-              value: false,
-            },
-          ],
-          2: [
-            {
-              text: 'Lines From Great Russian Literature? Or E-mails From My Boss?',
-              value: false,
-            },
-            {
-              text: 'Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit',
-              value: true,
-            },
-            {
-              text: 'Sign contract for "What are conference organizers afraid of?"',
-              value: true,
-            },
-          ],
+        demandsAccepted: {
+          0: [],
+          1: [],
         },
         list: {
           0: false,
@@ -589,9 +539,68 @@
         },
       }
     },
+    computed: {
+      uid () {
+        return this.$store.state.user.uid
+      },
+      userData () {
+        return this.$store.state.userData
+      },
+    },
+    mounted () {
+      this.getAccessDemands()
+    },
     methods: {
-      complete (index) {
-        this.list[index] = !this.list[index]
+      async accept (demand) {
+        demand.project.accessDemand = demand.project.accessDemand.filter(item => item !== demand.investisseur.uid)
+        demand.project.accessProject.push(demand.investisseur.uid)
+        await firestore.collection('projects').doc(demand.project.uid).update({
+          accessDemand: demand.project.accessDemand,
+          accessProject: demand.project.accessProject,
+        }).then(() => {
+          this.getAccessDemands()
+        })
+      },
+      refuse () {
+
+      },
+      getAccessDemands () {
+        this.demands = []
+        this.demandsAccepted[0] = []
+        this.userData.projects.forEach(projectID => {
+          firestore.collection('projects').doc(projectID).get().then(project => {
+            if (project.exists) {
+              const projectData = project.data()
+              projectData.uid = projectID
+              projectData.accessDemand.forEach(investisseurID => {
+                firestore.collection('users').doc(investisseurID).get().then(investisseur => {
+                  if (investisseur.exists) {
+                    const investisseurData = investisseur.data()
+                    investisseurData.uid = investisseurID
+                    const res = {
+                      project: projectData,
+                      investisseur: investisseurData,
+                    }
+                    this.demands.push(res)
+                  }
+                })
+              })
+              projectData.accessProject.forEach(investisseurID => {
+                firestore.collection('users').doc(investisseurID).get().then(investisseur => {
+                  if (investisseur.exists) {
+                    const investisseurData = investisseur.data()
+                    investisseurData.uid = investisseurID
+                    const res = {
+                      project: projectData,
+                      investisseur: investisseurData,
+                    }
+                    this.demandsAccepted[0].push(res)
+                  }
+                })
+              })
+            }
+          })
+        })
       },
     },
   }

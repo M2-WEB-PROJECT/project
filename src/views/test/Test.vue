@@ -1,11 +1,13 @@
 <template>
   <v-row justify="center">
     <v-col cols="6">
-      <v-file-input
-        v-model="image"
-        @change="Preview_image"
-      />
-      <v-img :src="url" />
+      <v-text-field v-model="text" />
+      <div>
+        {{ text2 }}
+      </div>
+      <!--      <div>-->
+      <!--        {{ reverse }}-->
+      <!--      </div>-->
     </v-col>
   </v-row>
 </template>
@@ -15,14 +17,10 @@
     name: 'Test',
     data () {
       return {
-        image: null,
-        photoProject: null,
+        text: '',
       }
     },
-    methods: {
-      Preview_image () {
-        this.photoProject = URL.createObjectURL(this.image)
-      },
+    computed: {
     },
   }
 </script>

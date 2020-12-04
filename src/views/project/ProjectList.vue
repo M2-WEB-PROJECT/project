@@ -91,7 +91,7 @@
   import { mapMutations } from 'vuex'
 
   export default {
-    name: 'Project',
+    name: 'ProjectList',
     data () {
       return {
         loading: false,

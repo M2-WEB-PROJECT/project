@@ -30,11 +30,13 @@
                     <v-text-field
                       v-model="email"
                       label="Email"
+                      @keyup.enter="handleLogin"
                     />
                     <v-text-field
                       v-model="password"
                       type="password"
                       label="Password"
+                      @keyup.enter="handleLogin"
                     />
                   </v-col>
                 </v-row>

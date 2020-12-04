@@ -11,6 +11,9 @@ export default new Vuex.Store({
     userData: null,
   },
   mutations: {
+    SET_ACCESS_PROJECTS (state, payload) {
+      state.userData.accessProjects = payload
+    },
     SET_PROJECTS (state, payload) {
       state.userData.projects = payload
     },

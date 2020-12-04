@@ -204,7 +204,7 @@
     methods: {
       actionAccount (action) {
         if (action === 'Profile') {
-          this.$router.push('/pages/user')
+          this.$router.push('/profile')
         } else {
           this.logout()
         }

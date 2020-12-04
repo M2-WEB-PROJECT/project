@@ -331,12 +331,17 @@
       async createProject () {
         this.loading = true
         firestore.collection('projects').add({
+          uidAuthor: this.uid,
+          lastNameAuthor: this.userData.nom,
+          firstNameAuthor: this.userData.prenom,
           name: this.nameProject,
           emailPro: this.emailPro,
           tags: this.tags,
           budget: this.budgetProject,
           bio: this.bioProject,
           abstract: this.abstractProject,
+          accessProject: [],
+          accessDemand: [],
         }).then(async (success) => {
           this.userData.projects.push(success.id)
           let photoProjectURL = 'https://dpcpa.com/wp-content/uploads/2015/01/thumbnail-default.jpg'

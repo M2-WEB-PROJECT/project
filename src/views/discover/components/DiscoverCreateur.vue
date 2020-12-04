@@ -64,7 +64,7 @@
 </template>
 <script>
   export default {
-    name: 'UserProfileInvestisseur',
+    name: 'DiscoverCreateur',
     data () {
       return {
         searchInput: '',

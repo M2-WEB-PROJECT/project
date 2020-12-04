@@ -114,6 +114,7 @@
             prenom: this.prenom,
             role: this.role,
             projects: [],
+            accessProjects: [],
           })
         }).then(() => {
           this.$router.push('/auth/login')
