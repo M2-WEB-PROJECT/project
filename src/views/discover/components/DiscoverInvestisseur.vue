@@ -97,7 +97,7 @@
                 class="mr-2"
                 small
                 :disabled="hasAccessProjects(project)"
-                @click="addToHistory(project)"
+                @click="toDetailsProject(project)"
               >
                 En savoir plus
               </v-btn>
@@ -164,6 +164,13 @@
       this.setDataUser()
     },
     methods: {
+      toDetailsProject (project) {
+        this.addToHistory(project)
+        this.$router.push({
+          name: 'Project',
+          params: { project: project },
+        })
+      },
       hasAccessProjects (project) {
         return !project.accessProject.includes(this.uid)
       },

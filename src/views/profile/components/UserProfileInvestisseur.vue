@@ -104,6 +104,7 @@
                     placeholder="Pick a photo"
                     prepend-icon="mdi-camera"
                     label="Photo de profile"
+                    @change="previewPhotoProject"
                   />
                 </v-col>
                 <v-col cols="12">
@@ -137,7 +138,7 @@
       >
         <base-material-card
           class="v-card-profile"
-          :avatar="userData.photoURL"
+          :avatar="previewPhoto"
         >
           <v-card-text class="text-center">
             <h6 class="display-1 mb-1 grey--text">
@@ -174,7 +175,7 @@
     name: 'UserProfileInvestisseur',
     data () {
       return {
-        photoURL: '',
+        photoURL: null,
         snackbar: false,
         photo: null,
         job: '',
@@ -196,6 +197,13 @@
       uid () {
         return this.$store.state.user.uid
       },
+      previewPhoto () {
+        if (this.photo === null && this.photoURL === null) {
+          return this.userData.photoURL
+        } else {
+          return this.photoURL
+        }
+      },
     },
     watch: {
       userData () {
@@ -206,6 +214,9 @@
       this.setData()
     },
     methods: {
+      previewPhotoProject () {
+        this.photoURL = URL.createObjectURL(this.photo)
+      },
       setData () {
         this.job = this.userData.job
         this.bio = this.userData.bio

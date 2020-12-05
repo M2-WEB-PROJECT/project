@@ -62,7 +62,10 @@
       origin="top right"
       transition="scale-transition"
     >
-      <template v-slot:activator="{ attrs, on }">
+      <template
+        v-if="isCreateur"
+        v-slot:activator="{ attrs, on }"
+      >
         <v-btn
           class="ml-2"
           min-width="0"
@@ -71,16 +74,22 @@
           v-on="on"
         >
           <v-badge
+            v-if="demands > 0"
             color="red"
             overlap
             bordered
           >
-            <template v-slot:badge>
-              <span>5</span>
+            <template
+              v-slot:badge
+            >
+              <span>{{ demands }}</span>
             </template>
 
             <v-icon>mdi-bell</v-icon>
           </v-badge>
+          <v-icon v-else>
+            mdi-bell
+          </v-icon>
         </v-btn>
       </template>
 
@@ -181,26 +190,38 @@
     },
 
     data: () => ({
-      notifications: [
-        'Mike John Responded to your email',
-        'You have 5 new tasks',
-        'You\'re now friends with Andrew',
-        'Another Notification',
-        'Another one',
-      ],
+      notifications: [],
       accounts: [
         'Profile',
         'Log out',
       ],
     }),
-
     computed: {
       userData () {
         return this.$store.state.userData
       },
+      demands () {
+        return this.$store.state.demands
+      },
+      isCreateur () {
+        return this.userData.role === 'Créateur'
+      },
       ...mapState(['drawer']),
     },
-
+    watch: {
+      demands () {
+        if (this.demands > 0) {
+          this.notifications = [`Vous avez ${this.demands} d'accès à des projets`]
+        } else {
+          this.notifications = []
+        }
+      },
+    },
+    mounted () {
+      if (this.demands > 0) {
+        this.notifications = [`Vous avez ${this.demands} d'accès à des projets`]
+      }
+    },
     methods: {
       actionAccount (action) {
         if (action === 'Profile') {
@@ -216,7 +237,6 @@
       },
       ...mapMutations({
         setDrawer: 'SET_DRAWER',
-
       }),
     },
   }

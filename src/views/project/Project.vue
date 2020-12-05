@@ -10,7 +10,10 @@
     />
     <v-row>
       <v-col>
-        <div class="text-center">
+        <div
+          v-if="isCreateur"
+          class="text-center"
+        >
           <v-btn
             class="mb-15"
             x-large
@@ -24,6 +27,25 @@
               mdi-arrow-left
             </v-icon>
             Project List
+          </v-btn>
+        </div>
+        <div
+          v-else
+          class="text-center"
+        >
+          <v-btn
+            class="mb-15"
+            x-large
+            color="secondary"
+            @click="toDiscover"
+          >
+            <v-icon
+              dark
+              class="mr-3"
+            >
+              mdi-arrow-left
+            </v-icon>
+            Back to Discover
           </v-btn>
         </div>
         <base-material-card
@@ -113,8 +135,14 @@
       userData () {
         return this.$store.state.userData
       },
+      isCreateur () {
+        return this.userData.role === 'Créateur'
+      },
     },
     methods: {
+      toDiscover () {
+        this.$router.push({ name: 'Discover' })
+      },
       toProjectList () {
         this.$router.push({ name: 'Projects' })
       },

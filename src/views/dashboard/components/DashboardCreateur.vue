@@ -424,6 +424,7 @@
 
 <script>
   import { firestore } from '@/main'
+  import { mapMutations } from 'vuex'
 
   export default {
     name: 'DashboardCreateur',
@@ -564,16 +565,16 @@
       refuse () {
 
       },
-      getAccessDemands () {
+      async getAccessDemands () {
         this.demands = []
         this.demandsAccepted[0] = []
-        this.userData.projects.forEach(projectID => {
-          firestore.collection('projects').doc(projectID).get().then(project => {
+        for await (const projectID of this.userData.projects) {
+          await firestore.collection('projects').doc(projectID).get().then(async project => {
             if (project.exists) {
               const projectData = project.data()
               projectData.uid = projectID
-              projectData.accessDemand.forEach(investisseurID => {
-                firestore.collection('users').doc(investisseurID).get().then(investisseur => {
+              for await (const investisseurID of projectData.accessDemand) {
+                await firestore.collection('users').doc(investisseurID).get().then(investisseur => {
                   if (investisseur.exists) {
                     const investisseurData = investisseur.data()
                     investisseurData.uid = investisseurID
@@ -584,9 +585,10 @@
                     this.demands.push(res)
                   }
                 })
-              })
-              projectData.accessProject.forEach(investisseurID => {
-                firestore.collection('users').doc(investisseurID).get().then(investisseur => {
+              }
+              this.setAccessDemands(this.demands.length)
+              for await (const investisseurID of projectData.accessProject) {
+                await firestore.collection('users').doc(investisseurID).get().then(investisseur => {
                   if (investisseur.exists) {
                     const investisseurData = investisseur.data()
                     investisseurData.uid = investisseurID
@@ -597,11 +599,14 @@
                     this.demandsAccepted[0].push(res)
                   }
                 })
-              })
+              }
             }
           })
-        })
+        }
       },
+      ...mapMutations({
+        setAccessDemands: 'SET_ACCESS_DEMANDS',
+      }),
     },
   }
 </script>

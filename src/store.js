@@ -9,8 +9,12 @@ export default new Vuex.Store({
     drawer: null,
     user: null,
     userData: null,
+    demands: 0,
   },
   mutations: {
+    SET_ACCESS_DEMANDS (state, payload) {
+      state.demands = payload
+    },
     SET_ACCESS_PROJECTS (state, payload) {
       state.userData.accessProjects = payload
     },
