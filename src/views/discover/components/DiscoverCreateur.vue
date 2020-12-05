@@ -24,8 +24,8 @@
     </v-card>
     <v-row>
       <transition
-        v-for="project in projectsFiltered"
-        :key="project.name"
+        v-for="investisseur in investisseursFiltered"
+        :key="investisseur.uid"
         name="fade"
       >
         <v-col
@@ -33,19 +33,19 @@
         >
           <base-material-card
             class="v-card-profile"
-            :avatar="userData.photoURL"
+            :avatar="investisseur.photoURL"
           >
             <v-card-text class="text-center">
               <h6 class="display-1 mb-1 grey--text">
-                {{ project.name }}
+                {{ investisseur.job }}
               </h6>
 
               <h4 class="display-2 font-weight-light mb-3 black--text">
-                John Doe
+                {{ investisseur.nom }} {{ investisseur.prenom }}
               </h4>
 
               <p class="font-weight-light grey--text">
-                Projet informatique de niveau stratospherique
+                Investisseur dans des projets informatiques de niveau stratospherique
               </p>
 
               <v-btn
@@ -63,21 +63,16 @@
   </v-container>
 </template>
 <script>
+  import { firestore } from '@/main'
+
   export default {
     name: 'DiscoverCreateur',
     data () {
       return {
         searchInput: '',
         loading: false,
-        projects: [
-          { name: 'Project 1' },
-          { name: 'Project 2' },
-          { name: 'Project 3' },
-          { name: 'Project 4' },
-          { name: 'Project 5' },
-          { name: 'Project 6' },
-        ],
-        projectsFiltered: [],
+        investisseurs: [],
+        investisseursFiltered: [],
       }
     },
     computed: {
@@ -94,15 +89,27 @@
       },
     },
     mounted () {
-      this.projectsFiltered = this.projects
+      this.getInvestisseurs()
     },
     methods: {
+      async getInvestisseurs () {
+        await firestore.collection('users').get().then(projects => {
+          this.investisseurs = projects.docs.map(doc => {
+            return {
+              uid: doc.id,
+              ...doc.data(),
+            }
+          })
+          this.investisseurs = this.investisseurs.filter(investisseur => investisseur.role === 'Investisseur')
+          this.investisseursFiltered = this.investisseurs
+        })
+      },
       search () {
         this.loading = true
         if (this.searchInput !== '') {
-          this.projectsFiltered = this.projects.filter(item => item.name.includes(this.searchInput))
+          this.investisseursFiltered = this.investisseurs.filter(item => item.name.includes(this.searchInput))
         } else {
-          this.projectsFiltered = this.projects
+          this.investisseursFiltered = this.investisseurs
         }
         this.loading = false
       },

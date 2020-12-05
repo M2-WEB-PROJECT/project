@@ -156,7 +156,6 @@
     },
     mounted () {
       this.getProjects()
-      this.projectsFiltered = this.projects
       this.history = this.userData.history
     },
     beforeDestroy () {
@@ -202,7 +201,7 @@
               ...doc.data(),
             }
           })
-          this.search()
+          this.projectsFiltered = this.projects
         })
       },
       setDataUser () {
