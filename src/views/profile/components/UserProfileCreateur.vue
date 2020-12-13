@@ -225,11 +225,11 @@
         this.photoURL = URL.createObjectURL(this.photo)
       },
       setData () {
-        this.job = this.userData.job
-        this.bio = this.userData.bio
-        this.extract = this.userData.extract
-        this.budget = this.userData.budget
-        this.company = this.userData.company
+        this.job = this.userData.job ? this.userData.job : ''
+        this.bio = this.userData.bio ? this.userData.bio : ''
+        this.extract = this.userData.extract ? this.userData.extract : ''
+        this.budget = this.userData.budget ? this.userData.budget : ''
+        this.company = this.userData.company ? this.userData.company : ''
       },
       async updateProfile () {
         if (this.photo) {

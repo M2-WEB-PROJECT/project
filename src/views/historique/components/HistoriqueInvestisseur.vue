@@ -125,6 +125,9 @@
           this.setDataUser()
         })
       },
+      deleteProfileHistory () {
+
+      },
       setDataUser () {
         firestore.collection('users').doc(this.uid).get().then(doc => {
           if (doc.exists) {
