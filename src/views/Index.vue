@@ -1,8 +1,7 @@
 <template>
   <div>
     <dashboard-core-app-bar />
-    <dashboard-core-drawer-admin v-if="false" />
-    <dashboard-core-drawer v-else />
+    <dashboard-core-drawer />
     <dashboard-core-view />
   </div>
 </template>
@@ -18,29 +17,25 @@
     components: {
       DashboardCoreAppBar: () => import('../components/core/AppBar'),
       DashboardCoreDrawer: () => import('../components/core/Drawer'),
-      DashboardCoreDrawerAdmin: () => import('../components/core/DrawerAdmin'),
       DashboardCoreView: () => import('../components/core/View'),
     },
 
     data: () => ({
       expandOnHover: false,
     }),
-
-    mounted () {
-      this.checkIfLoggedIn()
-    },
     computed: {
       userData () {
         return this.$store.state.userData
       },
-      isAdmin () {
-        return this.userData.role === 'Admin'
-      },
+    },
+
+    mounted () {
+      this.checkIfLoggedIn()
     },
     methods: {
       checkIfLoggedIn () {
         firebase.auth().onAuthStateChanged(user => {
-          if (!user && !this.userData) {
+          if (!user) {
             this.$router.push('/auth/login')
           } else {
             this.setDataUser(user.uid)
@@ -49,11 +44,9 @@
         })
       },
       async setDataUser (uid) {
-        await firestore.collection('users').doc(uid).get().then(doc => {
+        await firestore.collection('users').doc(uid).get().then(async doc => {
           if (doc.exists) {
-            this.setUserData(doc.data())
-          } else {
-            // doc.data() will be undefined in this case
+            await this.setUserData(doc.data())
           }
         })
       },
