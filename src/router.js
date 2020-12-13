@@ -17,12 +17,6 @@ export default new Router({
           path: 'register',
           component: () => import('@/views/authentification/register/Register'),
         },
-        // Register Administrator
-        {
-          name: 'RegisterAdmin',
-          path: 'registerAdmin',
-          component: () => import('@/views/authentification/register/RegisterAdmin'),
-        },
         // Login
         {
           name: 'Login',

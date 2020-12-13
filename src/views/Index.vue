@@ -1,7 +1,8 @@
 <template>
   <div>
     <dashboard-core-app-bar />
-    <dashboard-core-drawer />
+    <dashboard-core-drawer-admin v-if="isAdmin" />
+    <dashboard-core-drawer v-else />
     <dashboard-core-view />
   </div>
 </template>
@@ -17,6 +18,7 @@
     components: {
       DashboardCoreAppBar: () => import('../components/core/AppBar'),
       DashboardCoreDrawer: () => import('../components/core/Drawer'),
+      DashboardCoreDrawerAdmin: () => import('../components/core/DrawerAdmin'),
       DashboardCoreView: () => import('../components/core/View'),
     },
 
@@ -26,6 +28,11 @@
 
     mounted () {
       this.checkIfLoggedIn()
+    },
+    computed: {
+      isAdmin () {
+        return this.$store.state.userData.role === 'Admin'
+      },
     },
     methods: {
       checkIfLoggedIn () {
