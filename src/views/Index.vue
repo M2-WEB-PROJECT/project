@@ -1,7 +1,7 @@
 <template>
   <div>
     <dashboard-core-app-bar />
-    <dashboard-core-drawer-admin v-if="isAdmin" />
+    <dashboard-core-drawer-admin v-if="false" />
     <dashboard-core-drawer v-else />
     <dashboard-core-view />
   </div>
@@ -30,14 +30,17 @@
       this.checkIfLoggedIn()
     },
     computed: {
+      userData () {
+        return this.$store.state.userData
+      },
       isAdmin () {
-        return this.$store.state.userData.role === 'Admin'
+        return this.userData.role === 'Admin'
       },
     },
     methods: {
       checkIfLoggedIn () {
         firebase.auth().onAuthStateChanged(user => {
-          if (!user) {
+          if (!user && !this.userData) {
             this.$router.push('/auth/login')
           } else {
             this.setDataUser(user.uid)
