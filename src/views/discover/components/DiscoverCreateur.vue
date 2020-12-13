@@ -45,7 +45,7 @@
               </h4>
 
               <p class="font-weight-light grey--text">
-                Investisseur dans des projets informatiques de niveau stratospherique
+                {{ investisseur.extract }}
               </p>
 
               <v-btn
