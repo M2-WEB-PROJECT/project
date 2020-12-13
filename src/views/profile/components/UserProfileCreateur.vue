@@ -108,6 +108,12 @@
                   />
                 </v-col>
                 <v-col cols="12">
+                  <v-text-field
+                    v-model="extract"
+                    label="Une phrase pour me décrire"
+                  />
+                </v-col>
+                <v-col cols="12">
                   <v-textarea
                     v-model="bio"
                     label="About Me"
@@ -150,7 +156,7 @@
             </h4>
 
             <p class="font-weight-light grey--text">
-              {{ bio }}
+              {{ extract }}
             </p>
 
             <v-btn
@@ -180,6 +186,7 @@
         photo: null,
         job: '',
         bio: '',
+        extract: '',
         budget: 0,
         company: '',
         rules: [
@@ -220,6 +227,7 @@
       setData () {
         this.job = this.userData.job
         this.bio = this.userData.bio
+        this.extract = this.userData.extract
         this.budget = this.userData.budget
         this.company = this.userData.company
       },
@@ -236,6 +244,7 @@
         }
         await firestore.collection('users').doc(this.uid).update({
           bio: this.bio,
+          extract: this.extract,
           job: this.job,
           budget: this.budget,
           company: this.company,
