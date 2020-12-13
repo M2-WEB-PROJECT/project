@@ -45,7 +45,7 @@
               </h4>
 
               <p class="font-weight-light grey--text">
-                {{ investisseur.extract }}
+                {{ investisseur.abstract }}
               </p>
 
               <v-btn

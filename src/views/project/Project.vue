@@ -58,7 +58,7 @@
             </h4>
 
             <h6 class="display-1 mb-1 grey--text">
-              {{ userData.prenom }} {{ userData.nom }}
+              {{ project.firstNameAuthor }} {{ project.lastNameAuthor.toUpperCase() }}
             </h6>
 
             <h5 class="display-2 font-weight-light mb-3 black--text">
@@ -105,7 +105,7 @@
                       <v-img :src="userData.photoURL" />
                     </v-list-item-avatar>
                     <v-list-item-content>
-                      <v-list-item-title>{{ userData.prenom }} {{ userData.nom }}</v-list-item-title>
+                      <v-list-item-title>{{ project.firstNameAuthor }} {{ project.lastNameAuthor.toUpperCase() }}</v-list-item-title>
                       <v-list-item-subtitle>Author</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>

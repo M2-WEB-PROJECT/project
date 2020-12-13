@@ -109,7 +109,7 @@
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
-                    v-model="extract"
+                    v-model="abstract"
                     label="Une phrase pour me décrire"
                   />
                 </v-col>
@@ -156,7 +156,7 @@
             </h4>
 
             <p class="font-weight-light grey--text">
-              {{ extract }}
+              {{ abstract }}
             </p>
 
             <v-btn
@@ -188,7 +188,7 @@
         bio: '',
         budget: 0,
         company: '',
-        extract: '',
+        abstract: '',
         rules: [
           value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
         ],
@@ -227,7 +227,7 @@
       setData () {
         this.job = this.userData.job ? this.userData.job : ''
         this.bio = this.userData.bio ? this.userData.bio : ''
-        this.extract = this.userData.extract ? this.userData.extract : ''
+        this.abstract = this.userData.abstract ? this.userData.abstract : ''
         this.budget = this.userData.budget ? this.userData.budget : ''
         this.company = this.userData.company ? this.userData.company : ''
       },
@@ -243,7 +243,7 @@
             budget: this.budget,
             company: this.company,
             photoURL: this.photoURL,
-            extract: this.extract,
+            abstract: this.abstract,
           }).then(() => {
             this.setDataUser()
             this.snackbar = true
@@ -254,7 +254,7 @@
             job: this.job,
             budget: this.budget,
             company: this.company,
-            extract: this.extract,
+            abstract: this.abstract,
           }).then(() => {
             this.setDataUser()
             this.snackbar = true
