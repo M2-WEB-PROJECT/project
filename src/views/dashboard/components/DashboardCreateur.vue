@@ -14,7 +14,7 @@
           color="info"
           icon="mdi-twitter"
           title="Followers"
-          value="+245"
+          value="+238"
           sub-icon="mdi-clock"
           sub-text="Just Updated"
         />
