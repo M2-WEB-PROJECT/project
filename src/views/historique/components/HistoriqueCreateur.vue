@@ -14,6 +14,8 @@
       icon="mdi-clipboard-text"
       title="Historique de navigation profile"
       class="px-5 py-3"
+      delete-icon
+      @delete="deleteProfileHistory"
     >
       <v-simple-table>
         <thead>
@@ -22,78 +24,30 @@
               ID
             </th>
             <th class="primary--text">
-              Name
+              Nom
             </th>
             <th class="primary--text">
-              Country
+              Prenom
             </th>
             <th class="primary--text">
-              City
+              Job
             </th>
             <th class="text-right primary--text">
-              Salary
+              Company
             </th>
           </tr>
         </thead>
-
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Dakota Rice</td>
-            <td>Niger</td>
-            <td>Oud-Turnhout</td>
+          <tr
+            v-for="(investisseur, index) in userData.history"
+            :key="investisseur.nom"
+          >
+            <td>{{ index }}</td>
+            <td>{{ investisseur.nom }}</td>
+            <td>{{ investisseur.prenom }}</td>
+            <td>{{ investisseur.job }}</td>
             <td class="text-right">
-              $36,738
-            </td>
-          </tr>
-
-          <tr>
-            <td>2</td>
-            <td>Minverva Hooper</td>
-            <td>Curaçao</td>
-            <td>Sinaas-Waas</td>
-            <td class="text-right">
-              $23,789
-            </td>
-          </tr>
-
-          <tr>
-            <td>3</td>
-            <td>Sage Rodriguez</td>
-            <td>Netherlands</td>
-            <td>Baileux</td>
-            <td class="text-right">
-              $56,142
-            </td>
-          </tr>
-
-          <tr>
-            <td>4</td>
-            <td>Philip Chaney</td>
-            <td>Korea, South</td>
-            <td>Overland Park</td>
-            <td class="text-right">
-              $38,735
-            </td>
-          </tr>
-
-          <tr>
-            <td>5</td>
-            <td>Doris Greene</td>
-            <td>Malawi</td>
-            <td>Feldkirchen in Kärnten</td>
-            <td class="text-right">
-              $63,542
-            </td>
-          </tr>
-
-          <tr>
-            <td>6</td>
-            <td>Mason Porter</td>
-            <td>Chile</td>
-            <td>Gloucester</td>
-            <td class="text-right">
-              $78,615
+              {{ investisseur.company }}
             </td>
           </tr>
         </tbody>
@@ -101,3 +55,40 @@
     </base-material-card>
   </v-container>
 </template>
+<script>
+  import { firestore } from '@/main'
+  import { mapMutations } from 'vuex'
+
+  export default {
+    computed: {
+      uid () {
+        return this.$store.state.user.uid
+      },
+      userData () {
+        return this.$store.state.userData
+      },
+    },
+    methods: {
+      async deleteProjectHistory () {
+        await firestore.collection('users').doc(this.uid).update({
+          history: [],
+        }).then(() => {
+          this.setDataUser()
+        })
+      },
+      deleteProfileHistory () {
+
+      },
+      setDataUser () {
+        firestore.collection('users').doc(this.uid).get().then(doc => {
+          if (doc.exists) {
+            this.setUserData(doc.data())
+          }
+        })
+      },
+      ...mapMutations({
+        setUserData: 'SET_USER_DATA',
+      }),
+    },
+  }
+</script>

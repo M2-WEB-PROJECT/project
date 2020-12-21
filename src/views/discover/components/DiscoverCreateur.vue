@@ -52,6 +52,7 @@
                 color="primary"
                 rounded
                 class="mr-0"
+                @click="toDetailsInv(investisseur)"
               >
                 En savoir plus
               </v-btn>
@@ -64,7 +65,7 @@
 </template>
 <script>
   import { firestore } from '@/main'
-
+  import { mapMutations } from 'vuex'
   export default {
     name: 'DiscoverCreateur',
     data () {
@@ -73,6 +74,7 @@
         loading: false,
         investisseurs: [],
         investisseursFiltered: [],
+        history: [],
       }
     },
     computed: {
@@ -82,6 +84,9 @@
       userData () {
         return this.$store.state.userData
       },
+      uid () {
+        return this.$store.state.user.uid
+      },
     },
     watch: {
       searchInput () {
@@ -90,8 +95,16 @@
     },
     mounted () {
       this.getInvestisseurs()
+      this.history = this.userData.history
+    },
+    beforeDestroy () {
+      this.updateHistory()
+      this.setDataUser()
     },
     methods: {
+      toDetailsInv (investisseur) {
+        this.addToHistory(investisseur)
+      },
       async getInvestisseurs () {
         await firestore.collection('users').get().then(projects => {
           this.investisseurs = projects.docs.map(doc => {
@@ -103,6 +116,24 @@
           this.investisseurs = this.investisseurs.filter(investisseur => investisseur.role === 'Investisseur')
           this.investisseursFiltered = this.investisseurs
         })
+      },
+      setDataUser () {
+        firestore.collection('users').doc(this.uid).get().then(doc => {
+          if (doc.exists) {
+            this.setUserData(doc.data())
+          }
+        })
+      },
+      ...mapMutations({
+        setUserData: 'SET_USER_DATA',
+      }),
+      async updateHistory () {
+        await firestore.collection('users').doc(this.uid).update({
+          history: this.history,
+        })
+      },
+      addToHistory (investisseur) {
+        this.history.push(investisseur)
       },
       search () {
         this.loading = true
