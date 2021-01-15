@@ -18,8 +18,25 @@
               Be a part of our community
             </div>
           </template>
-
           <v-card-text>
+            <v-btn
+              class="btn btn-facebook"
+              text
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-facebook</v-icon>
+              Login with Facebook
+            </v-btn>
+            <v-btn
+              class="btn btn-google"
+              text
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-google</v-icon>
+              Login with Google
+            </v-btn>
             <v-container
               class="pa-0"
               fluid
@@ -123,3 +140,23 @@
     },
   }
 </script>
+<style>
+a { cursor: pointer }
+
+.btn-facebook {
+    background: #3B5998;
+    color: #fff !important;
+    margin-left:110px;
+    margin-bottom: 5px;
+    text-transform: none;
+    min-width: 190px !important;
+}
+
+.btn-google {
+    background: #428ec0;
+    color: #fff !important;
+    margin-left:110px;
+    text-transform: none;
+    min-width: 190px !important;
+}
+</style>
