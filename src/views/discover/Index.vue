@@ -6,6 +6,7 @@
 <script>
   import DiscoverInvestisseur from '@/views/discover/components/DiscoverInvestisseur'
   import DiscoverCreateur from '@/views/discover/components/DiscoverCreateur'
+  // import ProfileCreateur from '@/views/discover/components/ProfileCreateur'
   export default {
     name: 'Index',
     components: { DiscoverInvestisseur, DiscoverCreateur },
@@ -17,7 +18,6 @@
       isInvestisseur () {
         return this.userData.role === 'Investisseur'
       },
-
     },
   }
 </script>

@@ -27,6 +27,7 @@
               label="Tags"
               multiple
               attach
+              @change="search()"
               prepend-icon="mdi-tag-multiple"
             />
           </v-col>
@@ -84,7 +85,7 @@
               </h6>
 
               <h4 class="display-2 font-weight-light mb-3 black--text">
-                {{ project.firstNameAuthor }} {{ project.lastNameAuthor }}
+                <router-link v-bind:to="'/user/' + project.uidAuthor">{{ project.firstNameAuthor }} {{ project.lastNameAuthor }}</router-link>
               </h4>
 
               <p class="font-weight-light grey--text">
@@ -133,6 +134,7 @@
         loading: false,
         projects: [],
         projectsFiltered: [],
+        tagFilter: [],
         tags: ['IT', 'web', 'crypto-currency', 'security'],
         values: ['IT', 'web', 'crypto-currency', 'security'],
         history: [],
@@ -151,6 +153,15 @@
     },
     watch: {
       searchNameInput () {
+        this.search()
+      },
+      searchBudgetMinInput () {
+        this.search()
+      },
+      searchBudgetMaxInput () {
+        this.search()
+      },
+      tags () {
         this.search()
       },
     },
@@ -184,6 +195,14 @@
           this.getProjects()
         })
       },
+      // onChange (evt, tag) {
+      //   console.log(evt)
+      //   if (evt.target.checked) {
+      //     console.log('checked')
+      //   } else {
+      //     console.log('unchecked')
+      //   }
+      // },
       colorTag (tag) {
         switch (tag) {
           case 'web': return 'primary'
@@ -224,11 +243,34 @@
         this.history.push(project)
       },
       search () {
+        // console.log(this.tags.length)
+        // console.log('thek ha')
         this.loading = true
-        if (this.searchInput !== '') {
-          this.projectsFiltered = this.projects.filter(item => item.name.includes(this.searchNameInput))
-        } else {
+        if (this.searchNameInput === '' && this.searchBudgetMinInput === '' && this.searchBudgetMaxInput === '' && this.tags.length === 4) {
           this.projectsFiltered = this.projects
+        } else if (this.tags.length === 0) {
+          this.projectsFiltered = []
+        } else {
+          this.projectsFiltered = this.projects.filter(item => item.name.toLowerCase().includes(this.searchNameInput.toLowerCase()))
+          this.projectsFiltered = this.projectsFiltered.filter(item => item.budget >= this.searchBudgetMinInput)
+          this.projectsFiltered = this.projectsFiltered.filter(item => item.budget >= this.searchBudgetMaxInput)
+          // console.log(this.projectsFiltered.filter(item => item.tags.includes('IT')))
+          // this.projectsFiltered.forEach(element => console.log(element.tags))
+          // TEST BELOW
+          // this.projectsFiltered.forEach(element => console.log(element.tags.some(r => this.tags.includes(r))))
+          // this.projectsFiltered = this.projectsFiltered.splice(1, 1)
+          // console.log(this.projectsFiltered)
+          // Almost good
+          this.projectsFiltered.forEach(element => {
+            this.tagFilter.push(element.tags.some(r => this.tags.includes(r)) ? this.projectsFiltered : this.projectsFiltered.splice(this.projectsFiltered.indexOf(element), 1))
+          })
+          // console.log(this.tagFilter)
+          this.tagFilter = []
+          // Almost good end
+          // TAGS
+          // this.projectsFiltered = this.projectsFiltered.forEach(element => (element.tags.some(r => this.tags.includes(r))))
+          // console.log(this.projectsFiltered.forEach(element => (element.tags.some(r => this.tags.includes(r)))))
+          // END TAGS
         }
         this.loading = false
       },

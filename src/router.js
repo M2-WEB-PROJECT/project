@@ -89,6 +89,11 @@ export default new Router({
           path: '/test',
           component: () => import('@/views/test/Test'),
         },
+        {
+          name: 'User',
+          path: 'user/:id',
+          component: () => import('@/views/discover/components/ProfileCreateur'),
+        },
         // {
         //   name: 'Notifications',
         //   path: 'components/notifications',
