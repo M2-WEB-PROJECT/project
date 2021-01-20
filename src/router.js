@@ -43,6 +43,11 @@ export default new Router({
           component: () => import('@/views/profile/Index'),
         },
         {
+          name: 'EditProfile',
+          path: '/profile/edit',
+          component: () => import('@/views/profile/components/UserProfileCreateurEdit.vue'),
+        },
+        {
           name: 'Discover',
           path: '/discover',
           component: () => import('@/views/discover/Index'),
@@ -88,6 +93,11 @@ export default new Router({
           name: 'Test',
           path: '/test',
           component: () => import('@/views/test/Test'),
+        },
+        {
+          name: 'UserInvestor',
+          path: 'user/investor/:id',
+          component: () => import('@/views/discover/components/ProfileInvestisseur'),
         },
         // {
         //   name: 'Notifications',

@@ -20,83 +20,103 @@
         md="8"
       >
         <base-material-card
-          class="v-card-profile"
-          :avatar="previewPhoto"
           color="secondary"
         >
-        <h1 style="text-align:center">
-          {{ userData.prenom }} {{ userData.nom }}
-        </h1>
-          <v-container
-            class="fill-height"
-            fluid
-            style="min-height: 4px"
-          >
-          <v-btn
-            color="primary"
-            class="mr-0"
-            @click="toEditProfil"
-          >
-          Modifier mon profil
-          </v-btn>
-              <v-row>
-                <v-col cols="19">
-                  <v-card>
-                    <v-img
-                      src="http://lesbeauxproverbes.com/wp-content/uploads/019.jpg"
-                      height="200"
-                      class="grey darken-4"
-                    ></v-img>
-                  </v-card>
-                </v-col>
-              </v-row>
-          </v-container>
+          <template v-slot:heading>
+            <div class="display-2 font-weight-light">
+              Edit Profile
+            </div>
+
+            <div class="subtitle-1 font-weight-light">
+              Be creative & complete your profile
+            </div>
+          </template>
+
           <v-form>
             <v-container class="py-0">
               <v-row>
                 <v-col
-                  cols="1"
-                  md="12"
+                  cols="12"
+                  md="4"
                 >
                   <v-text-field
-                    label="Adresse mail"
+                    label="Email Address"
                     :value="user.email"
                     disabled
                   />
                 </v-col>
 
                 <v-col
-                  cols="1"
-                  md="12"
+                  cols="12"
+                  md="4"
                 >
                   <v-text-field
-                    v-model="company"
-                    label="Entreprise actuel"
+                    :value="userData.prenom"
+                    label="First Name"
                     disabled
                   />
                 </v-col>
+
                 <v-col
-                  cols="1"
-                  md="12"
+                  cols="12"
+                  md="4"
+                >
+                  <v-text-field
+                    :value="userData.nom"
+                    label="Last Name"
+                    disabled
+                  />
+                </v-col>
+
+                <v-col
+                  cols="12"
+                  md="4"
+                >
+                  <v-text-field
+                    v-model="company"
+                    label="Company"
+                  />
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="4"
                 >
                   <v-text-field
                     v-model="job"
-                    label="Poste actuel"
-                    disabled
+                    label="Job"
+                  />
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="4"
+                >
+                  <v-text-field
+                    v-model="budget"
+                    label="Budget"
+                    suffix="€"
+                  />
+                </v-col>
+                <v-col>
+                  <v-file-input
+                    v-model="photo"
+                    :rules="rules"
+                    accept="image/jpeg"
+                    placeholder="Pick a photo"
+                    prepend-icon="mdi-camera"
+                    label="Photo de profile"
+                    @change="previewPhotoProject"
                   />
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
                     v-model="abstract"
-                    label="Description"
-                    disabled
+                    label="Une phrase pour me décrire"
                   />
                 </v-col>
                 <v-col cols="12">
                   <v-textarea
                     v-model="bio"
-                    label="A propos"
-                    disabled
+                    label="About Me"
                   />
                 </v-col>
 
@@ -104,11 +124,49 @@
                   cols="12"
                   class="text-right"
                 >
-
+                  <v-btn
+                    color="primary"
+                    class="mr-0"
+                    @click="updateProfile"
+                  >
+                    Update Profile
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-container>
           </v-form>
+        </base-material-card>
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <base-material-card
+          class="v-card-profile"
+          :avatar="previewPhoto"
+        >
+          <v-card-text class="text-center">
+            <h6 class="display-1 mb-1 grey--text">
+              {{ job }} chez <span class="black--text">{{ company }}</span>
+            </h6>
+
+            <h4 class="display-2 font-weight-light mb-3 black--text">
+              {{ userData.prenom }} {{ userData.nom }}
+            </h4>
+
+            <p class="font-weight-light grey--text">
+              {{ abstract }}
+            </p>
+
+            <v-btn
+              color="primary"
+              rounded
+              class="mr-0"
+            >
+              Follow
+            </v-btn>
+          </v-card-text>
         </base-material-card>
       </v-col>
     </v-row>
@@ -165,9 +223,6 @@
     methods: {
       previewPhotoProject () {
         this.photoURL = URL.createObjectURL(this.photo)
-      },
-      toEditProfil () {
-        this.$router.push({ name: 'EditProfile' })
       },
       setData () {
         this.job = this.userData.job ? this.userData.job : ''

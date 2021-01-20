@@ -13,48 +13,51 @@
         <v-row>
           <v-col cols="3">
             <v-text-field
-              v-model="searchNameInput"
+              v-model="searchLastNameInput"
               :loading="loading"
-              label="Search Projects"
-              placeholder="Start typing to Search"
+              label="Rechercher un investisseur par son nom"
+              placeholder="Saisissez un nom"
               prepend-icon="mdi-magnify"
             />
           </v-col>
+          <!--v-col cols="3">
+            <v-text-field
+              v-model="searchFirstNameInput"
+              :loading="loading"
+              label="Rechercher un investisseur par son prénom"
+              placeholder="Saisissez un prénom"
+              prepend-icon="mdi-magnify"
+            />
+          </v-col-->
           <v-col cols="4">
             <v-select
-              v-model="tags"
+              v-model="job"
               :items="values"
-              label="Tags"
+              label="Job"
               multiple
               attach
-              prepend-icon="mdi-tag-multiple"
+              @change="search()"
+              prepend-icon="mdi-alpha-j-circle "
             />
           </v-col>
-          <v-col cols="2">
+          <v-col cols="4">
             <v-text-field
-              v-model="searchBudgetMinInput"
+              v-model="searchCompany"
               :loading="loading"
-              label="Budget Min"
-              placeholder="0"
-              suffix="€"
-            />
-          </v-col>
-          <v-col cols="2">
-            <v-text-field
-              v-model="searchBudgetMaxInput"
-              :loading="loading"
-              label="Budget Max"
-              placeholder="999 999"
-              suffix="€"
+              label="Entreprise"
+              placeholder="Saisissez le nom d'entreprise"
+              prepend-icon="mdi-domain"
+              suffix=""
             />
           </v-col>
         </v-row>
       </v-card-text>
+      <v-divider />
     </v-card>
     <v-row>
       <transition
-        v-for="project in projectsFiltered"
-        :key="project.name"
+        v-for="investisseur in investisseursFiltered"
+        :key="investisseur.uid"
         name="fade"
       >
         <v-col
@@ -62,56 +65,35 @@
         >
           <base-material-card
             class="v-card-profile"
-            :avatar="project.photoProjectURL"
+            :avatar="investisseur.photoURL"
           >
             <v-card-text class="text-center">
-              <v-row
-                justify="center"
-                class="mb-3"
-              >
-                <v-btn
-                  v-for="tag in project.tags"
-                  :key="tag"
-                  x-small
-                  :color="colorTag(tag)"
-                >
-                  {{ tag }}
-                </v-btn>
-              </v-row>
-
               <h6 class="display-1 mb-1 grey--text">
-                {{ project.name }}
+                {{ investisseur.job }} chez {{ investisseur.company }}
               </h6>
 
               <h4 class="display-2 font-weight-light mb-3 black--text">
-                {{ project.firstNameAuthor }} {{ project.lastNameAuthor }}
+                <router-link v-bind:to="'/user/investor/' + investisseur.uid">
+                  {{ investisseur.nom }} {{ investisseur.prenom }}
+                </router-link>
               </h4>
 
               <p class="font-weight-light grey--text">
-                {{ project.abstract }}
+                {{ investisseur.abstract }}
               </p>
 
-              <v-btn
-                color="primary"
-                rounded
-                class="mr-2"
-                small
-                :disabled="hasAccessProjects(project)"
-                @click="toDetailsProject(project)"
-              >
-                En savoir plus
-              </v-btn>
-              <v-btn
-                v-show="hasAccessProjects(project)"
-                color="secondary"
-                rounded
-                class="mr-0"
-                small
-                :disabled="hasDemandAccessProjects(project)"
-                @click="demandAccess(project)"
-              >
-                Demander l'acces
-              </v-btn>
+              <router-link v-bind:to="'/user/investor/' + investisseur.uid">
+                <v-btn
+                  color="primary"
+                  rounded
+                  class="mr-2"
+                  small
+                  @click="toDetailsInvestisseur(investisseur)"
+                >
+                  Regarder le profil
+                </v-btn>
+              </router-link>
+
             </v-card-text>
           </base-material-card>
         </v-col>
@@ -124,17 +106,18 @@
   import { mapMutations } from 'vuex'
 
   export default {
-    name: 'DiscoverInvestisseur',
+    name: 'DiscoverCreateur',
     data () {
       return {
-        searchNameInput: '',
-        searchBudgetMinInput: '',
-        searchBudgetMaxInput: '',
+        searchLastNameInput: '',
+        // searchFirstNameInput: '',
+        searchCompany: '',
         loading: false,
-        projects: [],
-        projectsFiltered: [],
-        tags: ['IT', 'web', 'crypto-currency', 'security'],
-        values: ['IT', 'web', 'crypto-currency', 'security'],
+        investisseurs: [],
+        investisseursFiltered: [],
+        jobFilter: [],
+        job: ['CTO', 'Développeur web', 'Autres'],
+        values: ['CTO', 'Développeur web', 'Autres'],
         history: [],
       }
     },
@@ -150,58 +133,45 @@
       },
     },
     watch: {
-      searchNameInput () {
+      searchLastNameInput () {
+        this.search()
+      },
+      /* searchFirstNameInput () {
+        this.search()
+      }, */
+      searchCompany () {
+        this.search()
+      },
+      job () {
         this.search()
       },
     },
     mounted () {
-      this.getProjects()
+      this.getInvestisseurs()
       this.history = this.userData.history
     },
-    beforeDestroy () {
-      this.updateHistory()
-      this.setDataUser()
-    },
+    // beforeDestroy () {
+    //  this.updateHistory()
+    //  this.setDataUser()
+    // },
     methods: {
-      toDetailsProject (project) {
-        this.addToHistory(project)
+      toDetailsInvestisseur (investisseur) {
+        this.addToHistory(investisseur)
         this.$router.push({
-          name: 'Project',
-          params: { project: project },
+          name: 'Investisseur',
+          params: { investisseur: investisseur },
         })
       },
-      hasAccessProjects (project) {
-        return !project.accessProject.includes(this.uid)
-      },
-      hasDemandAccessProjects (project) {
-        return project.accessDemand.includes(this.uid)
-      },
-      async demandAccess (project) {
-        project.accessDemand.push(this.uid)
-        await firestore.collection('projects').doc(project.uid).update({
-          accessDemand: project.accessDemand,
-        }).then(() => {
-          this.getProjects()
-        })
-      },
-      colorTag (tag) {
-        switch (tag) {
-          case 'web': return 'primary'
-          case 'crypto-currency': return 'secondary'
-          case 'security': return 'info'
-          case 'IT': return 'info'
-          default: return ''
-        }
-      },
-      async getProjects () {
-        await firestore.collection('projects').get().then(projects => {
-          this.projects = projects.docs.map(doc => {
+      async getInvestisseurs () {
+        await firestore.collection('users').get().then(projects => {
+          this.investisseurs = projects.docs.map(doc => {
             return {
               uid: doc.id,
               ...doc.data(),
             }
           })
-          this.projectsFiltered = this.projects
+          this.investisseurs = this.investisseurs.filter(investisseur => investisseur.role === 'Investisseur')
+          this.investisseursFiltered = this.investisseurs
         })
       },
       setDataUser () {
@@ -213,22 +183,31 @@
       },
       ...mapMutations({
         setUserData: 'SET_USER_DATA',
-        setAccessProjects: 'SET_ACCESS_PROJECTS',
       }),
       async updateHistory () {
         await firestore.collection('users').doc(this.uid).update({
           history: this.history,
         })
       },
-      addToHistory (project) {
-        this.history.push(project)
+      addToHistory (investisseur) {
+        this.history.push(investisseur)
       },
       search () {
+        // console.log(this.job.length)
         this.loading = true
-        if (this.searchInput !== '') {
-          this.projectsFiltered = this.projects.filter(item => item.name.includes(this.searchNameInput))
+        if (this.searchLastNameInput === '' /* && this.searchFirstNameInput === '' */ && this.searchCompany === '' && this.job.length === 3) {
+          this.investisseursFiltered = this.investisseurs
+        } else if (this.job.length === 0) {
+          this.investisseursFiltered = []
         } else {
-          this.projectsFiltered = this.projects
+          this.investisseursFiltered = this.investisseurs.filter(item => item.nom.toLowerCase().includes(this.searchLastNameInput.toLowerCase()))
+          // this.investisseursFiltered = this.investisseurs.filter(item => item.prenom.toLowerCase().includes(this.searchFirstNameInput.toLowerCase()))
+          this.investisseursFiltered = this.investisseurs.filter(item => item.company.toLowerCase().includes(this.searchCompany.toLowerCase()))
+          this.investisseursFiltered.forEach(element => {
+            this.jobFilter.push(element.job.some(r => this.job.includes(r)) ? this.investisseursFiltered : this.investisseursFiltered.splice(this.investisseursFiltered.indexOf(element), 1))
+          })
+          // console.log(this.jobFilter)
+          this.jobFilter = []
         }
         this.loading = false
       },
