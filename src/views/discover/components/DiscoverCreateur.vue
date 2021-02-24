@@ -150,10 +150,10 @@
       this.getInvestisseurs()
       this.history = this.userData.history
     },
-    // beforeDestroy () {
-    //  this.updateHistory()
-    //  this.setDataUser()
-    // },
+    beforeDestroy () {
+      this.updateHistory()
+      this.setDataUser()
+    },
     methods: {
       toDetailsInvestisseur (investisseur) {
         this.addToHistory(investisseur)
