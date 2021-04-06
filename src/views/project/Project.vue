@@ -105,7 +105,7 @@
                       <v-img :src="userData.photoURL" />
                     </v-list-item-avatar>
                     <v-list-item-content>
-                      <v-list-item-title>{{ project.firstNameAuthor }} {{ project.lastNameAuthor.toUpperCase() }}</v-list-item-title>
+                      <v-list-item-title><a @click="toAuthorProfile">{{ project.firstNameAuthor }} {{ project.lastNameAuthor.toUpperCase() }}</a></v-list-item-title>
                       <v-list-item-subtitle>Author</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
@@ -119,6 +119,8 @@
   </v-container>
 </template>
   <script>
+  import { firestore } from '@/main'
+
   export default {
     props: {
       project: {
@@ -129,7 +131,15 @@
     data () {
       return {
         carrousel: 0,
+        historyProfile: [],
       }
+    },
+    mounted () {
+      this.historyProfile = this.userData.historyProfile
+    },
+    beforeDestroy () {
+      this.updateHistory()
+      this.setDataUser()
     },
     computed: {
       userData () {
@@ -140,6 +150,26 @@
       },
     },
     methods: {
+      async updateHistory () {
+        await firestore.collection('users').doc(this.uid).update({
+          historyProfile: this.historyProfile,
+        })
+      },
+      addToHistoryProfile (profile) {
+        this.historyProfile.unshift(profile)
+      },
+      async toAuthorProfile () {
+        await firestore.collection('users').doc(this.project.uidAuthor).get().then(doc => {
+          if (doc.exists) {
+            const profileCreateur = doc.data()
+            this.addToHistoryProfile(profileCreateur)
+            this.$router.push({
+              name: 'ProfileCreateur',
+              params: { profilCreateur: profileCreateur },
+            })
+          }
+        })
+      },
       toDiscover () {
         this.$router.push({ name: 'Discover' })
       },

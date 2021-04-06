@@ -371,7 +371,7 @@
             class="transparent"
           >
             <v-card-text>
-              <template v-for="(demand, i) in demandsAccepted[tabs]">
+              <template v-for="(demand, i) in demandsAcceptedRefused[tabs]">
                 <v-row
                   :key="i"
                   align="center"
@@ -408,6 +408,7 @@
                       size="30"
                       color="error"
                       class="mx-1"
+                      @click="clearDemand(demand)"
                     >
                       mdi-close
                     </v-icon>
@@ -529,7 +530,7 @@
         ],
         demands: [],
         tabs: 0,
-        demandsAccepted: {
+        demandsAcceptedRefused: {
           0: [],
           1: [],
         },
@@ -562,12 +563,27 @@
           this.getAccessDemands()
         })
       },
-      refuse () {
-
+      async refuse (demand) {
+        demand.project.accessDemand = demand.project.accessDemand.filter(item => item !== demand.investisseur.uid)
+        demand.project.accessRefuse.push(demand.investisseur.uid)
+        await firestore.collection('projects').doc(demand.project.uid).update({
+          accessDemand: demand.project.accessDemand,
+          accessRefuse: demand.project.accessRefuse,
+        }).then(() => {
+          this.getAccessDemands()
+        })
+      },
+      async clearDemand (demand) {
+        demand.project.accessRefuse = demand.project.accessRefuse.filter(item => item !== demand.investisseur.uid)
+        await firestore.collection('projects').doc(demand.project.uid).update({
+          accessRefuse: demand.project.accessRefuse,
+        }).then(() => {
+          this.getAccessDemands()
+        })
       },
       async getAccessDemands () {
         this.demands = []
-        this.demandsAccepted[0] = []
+        this.demandsAcceptedRefused[0] = []
         for await (const projectID of this.userData.projects) {
           await firestore.collection('projects').doc(projectID).get().then(async project => {
             if (project.exists) {
@@ -596,7 +612,23 @@
                       project: projectData,
                       investisseur: investisseurData,
                     }
-                    this.demandsAccepted[0].push(res)
+                    this.demandsAcceptedRefused[0].push(res)
+                  }
+                })
+              }
+              console.log('22222222222')
+              console.log(projectData.accessRefuse)
+              console.log('22222222222')
+              for await (const investisseurID of projectData.accessRefuse) {
+                await firestore.collection('users').doc(investisseurID).get().then(investisseur => {
+                  if (investisseur.exists) {
+                    const investisseurData = investisseur.data()
+                    investisseurData.uid = investisseurID
+                    const res = {
+                      project: projectData,
+                      investisseur: investisseurData,
+                    }
+                    this.demandsAcceptedRefused[1].push(res)
                   }
                 })
               }

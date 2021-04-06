@@ -8,13 +8,13 @@
       <v-col
         cols="12"
         sm="6"
-        lg="3"
+        lg="4"
       >
         <base-material-stats-card
-          color="info"
+          color="primary"
           icon="mdi-twitter"
-          title="Followers"
-          value="+245"
+          title="Projets Accessible"
+          value="245"
           sub-icon="mdi-clock"
           sub-text="Just Updated"
         />
@@ -23,12 +23,12 @@
       <v-col
         cols="12"
         sm="6"
-        lg="3"
+        lg="4"
       >
         <base-material-stats-card
-          color="primary"
+          color="info"
           icon="mdi-poll"
-          title="Website Visits"
+          title="Profile Visites"
           value="75.521"
           sub-icon="mdi-tag"
           sub-text="Tracked from Google Analytics"
@@ -38,31 +38,15 @@
       <v-col
         cols="12"
         sm="6"
-        lg="3"
-      >
-        <base-material-stats-card
-          color="info"
-          icon="mdi-store"
-          title="Revenue"
-          value="$ 34,245"
-          sub-icon="mdi-calendar"
-          sub-text="Last 24 Hours"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        sm="6"
-        lg="3"
+        lg="4"
       >
         <base-material-stats-card
           color="secondary"
-          icon="mdi-sofa"
-          title="Bookings"
-          value="184"
-          sub-icon="mdi-alert"
-          sub-icon-color="red"
-          sub-text="Get More Space..."
+          icon="mdi-store"
+          title="Budget"
+          value="$ 34,245"
+          sub-icon="mdi-calendar"
+          sub-text="Last 24 Hours"
         />
       </v-col>
       <v-col
@@ -276,7 +260,6 @@
 
       <v-col
         cols="12"
-        md="6"
       >
         <base-material-card
           color="primary"
@@ -284,25 +267,51 @@
         >
           <template v-slot:heading>
             <div class="display-2 font-weight-light">
-              Employees Stats
+              Dernières visites
             </div>
 
             <div class="subtitle-1 font-weight-light">
-              New employees on 15th September, 2016
+              Remontez le temps...
             </div>
           </template>
           <v-card-text>
-            <v-data-table
-              :headers="headers"
-              :items="items"
-            />
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th class="primary--text">
+                    Name
+                  </th>
+                  <th class="primary--text">
+                    Author First Name
+                  </th>
+                  <th class="primary--text">
+                    Author Last Name
+                  </th>
+                  <th class="text-right primary--text">
+                    Budget
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(project) in userData.history.slice(userData.history.length-5, userData.history.length)"
+                  :key="project.name"
+                >
+                  <td>{{ project.name }}</td>
+                  <td>{{ project.firstNameAuthor }}</td>
+                  <td>{{ project.lastNameAuthor }}</td>
+                  <td class="text-right">
+                    {{ project.budget }}€
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
           </v-card-text>
         </base-material-card>
       </v-col>
 
       <v-col
         cols="12"
-        md="6"
       >
         <base-material-card
           class="px-5 py-3"
@@ -316,22 +325,22 @@
             >
               <v-tab class="mr-3">
                 <v-icon class="mr-2">
-                  mdi-bug
-                </v-icon>
-                Bugs
-              </v-tab>
-              <v-tab class="mr-3">
-                <v-icon class="mr-2">
                   mdi-code-tags
                 </v-icon>
-                Website
+                Projects
               </v-tab>
-              <v-tab>
-                <v-icon class="mr-2">
-                  mdi-cloud
-                </v-icon>
-                Server
-              </v-tab>
+<!--              <v-tab class="mr-3">-->
+<!--                <v-icon class="mr-2">-->
+<!--                  mdi-bug-->
+<!--                </v-icon>-->
+<!--                Bugs-->
+<!--              </v-tab>-->
+<!--              <v-tab>-->
+<!--                <v-icon class="mr-2">-->
+<!--                  mdi-cloud-->
+<!--                </v-icon>-->
+<!--                Server-->
+<!--              </v-tab>-->
             </v-tabs>
           </template>
 
@@ -588,6 +597,14 @@
           2: false,
         },
       }
+    },
+    computed: {
+      uid () {
+        return this.$store.state.user.uid
+      },
+      userData () {
+        return this.$store.state.userData
+      },
     },
     methods: {
       complete (index) {

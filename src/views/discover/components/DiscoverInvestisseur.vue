@@ -221,7 +221,7 @@
         })
       },
       addToHistory (project) {
-        this.history.push(project)
+        this.history.unshift(project)
       },
       search () {
         this.loading = true

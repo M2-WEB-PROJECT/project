@@ -17,41 +17,11 @@
       delete-icon
       @delete="deleteProfileHistory"
     >
-      <v-simple-table>
-        <thead>
-          <tr>
-            <th class="primary--text">
-              ID
-            </th>
-            <th class="primary--text">
-              Name
-            </th>
-            <th class="primary--text">
-              Author First Name
-            </th>
-            <th class="primary--text">
-              Author Last Name
-            </th>
-            <th class="text-right primary--text">
-              Budget
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(project,index) in userData.history"
-            :key="project.name"
-          >
-            <td>{{ index }}</td>
-            <td>{{ project.name }}</td>
-            <td>{{ project.firstNameAuthor }}</td>
-            <td>{{ project.lastNameAuthor }}</td>
-            <td class="text-right">
-              {{ project.budget }}€
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
+      <v-data-table
+        :headers="headersProfile"
+        :items="userData.historyProfile"
+        :items-per-page="5"
+      />
     </base-material-card>
 
     <div class="py-3" />
@@ -65,42 +35,11 @@
       delete-icon
       @delete="deleteProjectHistory"
     >
-      <v-simple-table>
-        <thead>
-          <tr>
-            <th class="secondary--text">
-              ID
-            </th>
-            <th class="secondary--text">
-              Name
-            </th>
-            <th class="primary--text">
-              Author First Name
-            </th>
-            <th class="primary--text">
-              Author Last Name
-            </th>
-            <th class="text-right primary--text">
-              Budget
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr
-            v-for="(project,index) in userData.history"
-            :key="project.name"
-          >
-            <td>{{ index }}</td>
-            <td>{{ project.name }}</td>
-            <td>{{ project.firstNameAuthor }}</td>
-            <td>{{ project.lastNameAuthor }}</td>
-            <td class="text-right">
-              {{ project.budget }}€
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
+      <v-data-table
+        :headers="headers"
+        :items="userData.history"
+        :items-per-page="5"
+      />
     </base-material-card>
   </v-container>
 </template>
@@ -109,6 +48,32 @@
   import { mapMutations } from 'vuex'
 
   export default {
+    data () {
+      return {
+        headers: [
+          {
+            text: 'Name',
+            align: 'start',
+            sortable: true,
+            value: 'name',
+          },
+          { text: 'First Name Author', value: 'firstNameAuthor' },
+          { text: 'Last Name Author', value: 'lastNameAuthor' },
+          { text: 'Budget (€)', value: 'budget' },
+        ],
+        headersProfile: [
+          {
+            text: 'Name',
+            align: 'start',
+            sortable: true,
+            value: 'name',
+          },
+          { text: 'First Name Author', value: 'firstNameAuthor' },
+          { text: 'Last Name Author', value: 'lastNameAuthor' },
+          { text: 'Budget (€)', value: 'budget' },
+        ],
+      }
+    },
     computed: {
       uid () {
         return this.$store.state.user.uid

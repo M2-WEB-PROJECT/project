@@ -43,6 +43,11 @@ export default new Router({
           component: () => import('@/views/profile/Index'),
         },
         {
+          name: 'ProfileCreateur',
+          path: '/profileCreateur',
+          component: () => import('@/views/profile/components/ProfileCreateur'),
+        },
+        {
           name: 'Discover',
           path: '/discover',
           component: () => import('@/views/discover/Index'),
