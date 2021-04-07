@@ -40,9 +40,14 @@
 </template>
 
 <script>
+  /* import firebase from 'firebase/app' */
   export default {
     name: 'DashboardCoreFooter',
-
+    /* mounted () {
+      firebase.auth().signOut().then(() => {
+        this.$router.push('/auth/login')
+      })
+    }, */
     data: () => ({
       links: [
         {

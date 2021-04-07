@@ -20,6 +20,26 @@
           </template>
 
           <v-card-text>
+            <!-- <v-btn
+              class="btn btn-facebook"
+              text
+              v-bind="attrs"
+              v-on="on"
+              @click="signInWithFacebook"
+            >
+              <v-icon>mdi-facebook</v-icon>
+              Login with Facebook
+            </v-btn>
+            <v-btn
+              class="btn btn-google"
+              text
+              v-bind="attrs"
+              v-on="on"
+              @click="signInWithGoogle"
+            >
+              <v-icon>mdi-google</v-icon>
+              Login with Google
+            </v-btn> -->
             <v-container
               class="pa-0"
               fluid
@@ -85,6 +105,18 @@
           }
         })
       },
+      /* signInWithGoogle () {
+        var provider = new firebase.auth.GoogleAuthProvider()
+        firebase.auth().signInWithPopup(provider).then(() => {
+          this.$router.push('/dashboard')
+        })
+      },
+      signInWithFacebook () {
+        var provider = new firebase.auth.FacebookAuthProvider()
+        firebase.auth().signInWithPopup(provider).then(() => {
+          this.$router.push('/dashboard')
+        })
+      }, */
       handleLogin () {
         firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(credential => {
           this.setDataUser(credential.user.uid)
@@ -110,3 +142,22 @@
     },
   }
 </script>
+
+<style>
+.btn-facebook {
+    background: #3B5998;
+    color: #fff !important;
+    margin-left:26%;
+    margin-bottom: 5px;
+    text-transform: none;
+    min-width: 190px !important;
+}
+
+.btn-google {
+    background: #428ec0;
+    color: #fff !important;
+    margin-left:26%;
+    text-transform: none;
+    min-width: 190px !important;
+}
+</style>
