@@ -10,11 +10,11 @@
           color="primary"
         >
           <template v-slot:heading>
-            <div class="display-2 font-weight-light">
+            <div class="text-h3 font-weight-light">
               Register
             </div>
 
-            <div class="subtitle-1 font-weight-light">
+            <div class="text-subtitle-1 font-weight-light">
               Be a part of our community
             </div>
           </template>
@@ -41,13 +41,15 @@
             </v-btn>
             <v-row>
               <v-col class="col-md-5">
-                <div style= "align-items: center;border-bottom: 1px solid #dadde1;display: flex;margin-top:16px;text-align: center;"></div>
+                <div style="align-items: center;border-bottom: 1px solid #dadde1;display: flex;margin-top:16px;text-align: center;" />
               </v-col>
               <v-col class="text-center">
-                <div style="color: #dadde1; margin-top:6px">or</div>
+                <div style="color: #dadde1; margin-top:6px">
+                  or
+                </div>
               </v-col>
               <v-col class="col-md-5">
-                <div style= "align-items: center;border-bottom: 1px solid #dadde1;display: flex;margin-top:16px;text-align: center;"></div>
+                <div style="align-items: center;border-bottom: 1px solid #dadde1;display: flex;margin-top:16px;text-align: center;" />
               </v-col>
             </v-row>
             <v-container

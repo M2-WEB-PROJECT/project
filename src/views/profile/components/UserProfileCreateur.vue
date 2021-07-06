@@ -23,11 +23,11 @@
           color="secondary"
         >
           <template v-slot:heading>
-            <div class="display-2 font-weight-light">
+            <div class="text-h3 font-weight-light">
               Edit Profile
             </div>
 
-            <div class="subtitle-1 font-weight-light">
+            <div class="text-subtitle-1 font-weight-light">
               Be creative & complete your profile
             </div>
           </template>
@@ -147,11 +147,11 @@
           :avatar="previewPhoto"
         >
           <v-card-text class="text-center">
-            <h6 class="display-1 mb-1 grey--text">
+            <h6 class="text-h4 mb-1 grey--text">
               {{ job }} chez <span class="black--text">{{ company }}</span>
             </h6>
 
-            <h4 class="display-2 font-weight-light mb-3 black--text">
+            <h4 class="text-h3 font-weight-light mb-3 black--text">
               {{ userData.prenom }} {{ userData.nom }}
             </h4>
 

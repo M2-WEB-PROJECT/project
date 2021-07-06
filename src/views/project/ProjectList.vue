@@ -49,11 +49,11 @@
             @delete="deleteProject(project)"
           >
             <v-card-text class="text-center">
-              <h6 class="display-1 mb-1 grey--text">
+              <h6 class="text-h4 mb-1 grey--text">
                 {{ project.name }}
               </h6>
 
-              <h4 class="display-2 font-weight-light mb-3 black--text">
+              <h4 class="text-h3 font-weight-light mb-3 black--text">
                 {{ userData.prenom }} {{ userData.nom }}
               </h4>
 

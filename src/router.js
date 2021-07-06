@@ -74,26 +74,26 @@ export default new Router({
           component: () => import('@/views/project/ProjectForm'),
           props: true,
         },
-        {
-          name: 'TimeLine',
-          path: '/timeline',
-          component: () => import('@/views/timeline/Timeline'),
-        },
-        {
-          name: 'Icons',
-          path: 'components/icons',
-          component: () => import('@/components/Icons'),
-        },
-        {
-          name: 'Typography',
-          path: 'components/typography',
-          component: () => import('@/components/Typography'),
-        },
-        {
-          name: 'Test',
-          path: '/test',
-          component: () => import('@/views/test/Test'),
-        },
+        // {
+        //   name: 'TimeLine',
+        //   path: '/timeline',
+        //   component: () => import('@/views/timeline/Timeline'),
+        // },
+        // {
+        //   name: 'Icons',
+        //   path: 'components/icons',
+        //   component: () => import('@/components/Icons'),
+        // },
+        // {
+        //   name: 'Typography',
+        //   path: 'components/typography',
+        //   component: () => import('@/components/Typography'),
+        // },
+        // {
+        //   name: 'Test',
+        //   path: '/test',
+        //   component: () => import('@/views/test/Test'),
+        // },
         // {
         //   name: 'Notifications',
         //   path: 'components/notifications',

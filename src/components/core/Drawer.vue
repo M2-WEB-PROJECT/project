@@ -110,21 +110,21 @@
           icon: 'mdi-border-color',
           to: '/projects',
         },
-        {
-          title: 'typography',
-          icon: 'mdi-format-font',
-          to: '/components/typography',
-        },
-        {
-          title: 'icons',
-          icon: 'mdi-chart-bubble',
-          to: '/components/icons',
-        },
-        {
-          title: 'test',
-          icon: 'mdi-chart-bubble',
-          to: '/test',
-        },
+        // {
+        //   title: 'typography',
+        //   icon: 'mdi-format-font',
+        //   to: '/components/typography',
+        // },
+        // {
+        //   title: 'icons',
+        //   icon: 'mdi-chart-bubble',
+        //   to: '/components/icons',
+        // },
+        // {
+        //   title: 'test',
+        //   icon: 'mdi-chart-bubble',
+        //   to: '/test',
+        // },
         // {
         //   title: 'google',
         //   icon: 'mdi-map-marker',
@@ -135,11 +135,11 @@
         //   icon: 'mdi-bell',
         //   to: '/components/notifications',
         // },
-        {
-          title: 'timeline',
-          icon: 'mdi-chart-timeline-variant',
-          to: '/timeline',
-        },
+        // {
+        //   title: 'timeline',
+        //   icon: 'mdi-chart-timeline-variant',
+        //   to: '/timeline',
+        // },
       ],
     }),
     computed: {

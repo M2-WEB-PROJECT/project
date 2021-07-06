@@ -53,15 +53,15 @@
           :avatar="project.photoProjectURL"
         >
           <v-card-text class="text-center">
-            <h4 class="display-2 font-weight-light mb-3 black--text">
+            <h4 class="text-h3 font-weight-light mb-3 black--text">
               {{ project.name }}
             </h4>
 
-            <h6 class="display-1 mb-1 grey--text">
+            <h6 class="text-h4 mb-1 grey--text">
               {{ project.firstNameAuthor }} {{ project.lastNameAuthor.toUpperCase() }}
             </h6>
 
-            <h5 class="display-2 font-weight-light mb-3 black--text">
+            <h5 class="text-h3 font-weight-light mb-3 black--text">
               <v-btn
                 v-for="tag in project.tags"
                 :key="tag"
@@ -134,13 +134,6 @@
         historyProfile: [],
       }
     },
-    mounted () {
-      this.historyProfile = this.userData.historyProfile
-    },
-    beforeDestroy () {
-      this.updateHistory()
-      this.setDataUser()
-    },
     computed: {
       userData () {
         return this.$store.state.userData
@@ -148,6 +141,13 @@
       isCreateur () {
         return this.userData.role === 'Créateur'
       },
+    },
+    mounted () {
+      this.historyProfile = this.userData.historyProfile
+    },
+    beforeDestroy () {
+      this.updateHistory()
+      this.setDataUser()
     },
     methods: {
       async updateHistory () {

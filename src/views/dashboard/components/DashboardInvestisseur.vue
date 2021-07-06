@@ -112,7 +112,7 @@
             >
               mdi-clock-outline
             </v-icon>
-            <span class="caption grey--text font-weight-light">updated 10 minutes ago</span>
+            <span class="text-caption grey--text font-weight-light">updated 10 minutes ago</span>
           </template>
         </base-material-chart-card>
       </v-col>
@@ -186,7 +186,7 @@
             >
               mdi-clock-outline
             </v-icon>
-            <span class="caption grey--text font-weight-light">updated 4 minutes ago</span>
+            <span class="text-caption grey--text font-weight-light">updated 4 minutes ago</span>
           </template>
         </base-material-chart-card>
       </v-col>
@@ -253,7 +253,7 @@
             >
               mdi-clock-outline
             </v-icon>
-            <span class="caption grey--text font-weight-light">campaign sent 26 minutes ago</span>
+            <span class="text-caption grey--text font-weight-light">campaign sent 26 minutes ago</span>
           </template>
         </base-material-chart-card>
       </v-col>
@@ -266,11 +266,11 @@
           class="px-5 py-3"
         >
           <template v-slot:heading>
-            <div class="display-2 font-weight-light">
+            <div class="text-h3 font-weight-light">
               Dernières visites
             </div>
 
-            <div class="subtitle-1 font-weight-light">
+            <div class="text-subtitle-1 font-weight-light">
               Remontez le temps...
             </div>
           </template>
@@ -329,18 +329,18 @@
                 </v-icon>
                 Projects
               </v-tab>
-<!--              <v-tab class="mr-3">-->
-<!--                <v-icon class="mr-2">-->
-<!--                  mdi-bug-->
-<!--                </v-icon>-->
-<!--                Bugs-->
-<!--              </v-tab>-->
-<!--              <v-tab>-->
-<!--                <v-icon class="mr-2">-->
-<!--                  mdi-cloud-->
-<!--                </v-icon>-->
-<!--                Server-->
-<!--              </v-tab>-->
+              <!--              <v-tab class="mr-3">-->
+              <!--                <v-icon class="mr-2">-->
+              <!--                  mdi-bug-->
+              <!--                </v-icon>-->
+              <!--                Bugs-->
+              <!--              </v-tab>-->
+              <!--              <v-tab>-->
+              <!--                <v-icon class="mr-2">-->
+              <!--                  mdi-cloud-->
+              <!--                </v-icon>-->
+              <!--                Server-->
+              <!--              </v-tab>-->
             </v-tabs>
           </template>
 
